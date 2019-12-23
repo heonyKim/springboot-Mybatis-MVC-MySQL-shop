@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.repository.ProductRepository">
+	<!-- ADMIN -->
+	<select id="productList" resultType="com.example.shop.model.Product">
+		SELECT p.*, c.codeNm as 'categoryNm'
+		FROM product p
+		INNER JOIN code c ON c.codeGbn='PRODUCT' AND c.code=p.categoryCd
+		WHERE delId is null AND delDt is null
+		ORDER BY p.categoryCd, p.productNm
+	</select>
+	
+	<insert id="productInsert">
+		INSERT INTO product values(null, #{productNm}, #{price}, #{description}, #{categoryCd}, #{filePath}, #{insId}, now(), #{updId}, now(), null, null);
+	</insert>
+	
+	<update id="productUpdate">
+		UPDATE product SET productNm=#{productNm}, price=#{price}, description=#{description}, categoryCd=#{categoryCd}, filePath=#{filePath}, updId=#{updId}, updDt=now() WHERE id=#{id}
+	</update>
+	
+	<update id="productDelete">
+		UPDATE product SET delId=#{delId}, delDt=now() WHERE id=#{id}
+	</update>
+	
+	<!-- USER -->
+	<select id="findAll" resultType="com.example.shop.model.Product">
+		SELECT * FROM product ORDER BY id DESC
+	</select>
+	
+	
+	<select id="productBest3" resultType="com.example.shop.model.Product">
+		SELECT p.id,p.productNm,p.price,p.categoryCd,p.filePath,p.description, count(*) 
+		FROM product p JOIN orderInfo o ON p.id=o.productId WHERE p.delId is null AND p.delDt is null 
+		GROUP BY p.productNm,p.id ORDER BY count(*) DESC LIMIT 3
+	</select>
+	
+	<select id="productView" resultType="com.example.shop.model.Product">
+		SELECT p.*, c.codeNm as 'categoryNm' FROM product p INNER JOIN code c ON c.codeGbn='PRODUCT' AND c.code=p.categoryCd WHERE p.id = #{id};
+	</select>
+</mapper>

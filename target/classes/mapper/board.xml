@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.repository.BoardRepository">
+
+	<!-- ADMIN -->
+	<select id="findAll" resultType="com.example.shop.model.Board">
+		SELECT @ROWNUM := @ROWNUM + 1 as 'rowNum', b.*, u.email
+		from board b
+		INNER JOIN user u ON b.insId = u.id
+		WHERE b.delDt is null AND b.categoryCd = #{categoryCd} AND (@ROWNUM:=0)=0
+		ORDER BY rowNum desc;
+	</select>
+	
+	<insert id="save">
+		INSERT INTO board VALUES(null, #{title}, #{content}, #{categoryCd}, #{insId}, now(), #{updId}, now(), null, null)
+	</insert>
+	
+	<select id="findById" resultType="com.example.shop.model.Board">
+		SELECT b.*, u.email
+		FROM board b
+		INNER JOIN user u ON b.insId = u.id
+		WHERE b.id=#{id}
+	</select>
+	
+	<update id="update">
+  		UPDATE board SET title=#{title}, content=#{content}, updId=#{updId}, updDt=now() WHERE id=#{id}
+    </update>
+
+  	<update id="delete">
+  		UPDATE board SET delId=#{delId}, delDt=now() WHERE id=#{id}
+  	</update>
+
+  	<!-- USER -->
+
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.repository.SaleRepository">
+	<!-- ADMIN -->
+	<select id="findAll" resultType="com.example.shop.model.Sale">
+		SELECT s.*, p.productNm, p.categoryCd, p.price, c.codeNm as 'unitNm'
+		FROM sale s 
+		INNER JOIN product p ON s.productId = p.id
+		INNER JOIN code c ON s.unitCd = c.code AND c.codeGbn = 'UNIT'
+		ORDER BY s.endDate DESC
+	</select>
+	
+	<select id="findByProduct" resultType="com.example.shop.model.Product">
+		SELECT * FROM product WHERE categoryCd=#{categoryCd}
+	</select>
+	
+	<select id="findBycodeGbn" resultType="com.example.shop.model.Code">
+		SELECT * FROM code WHERE codeGbn='PRODUCT'
+	</select>
+	
+	<insert id="save">
+		INSERT INTO sale VALUES(null, #{productId}, #{amount}, #{unitCd}, #{startDate}, #{endDate}, #{insId}, now(), #{updId}, null);
+	</insert>
+	
+	<update id="update">
+  		UPDATE sale 
+  		SET amount=#{amount}, unitCd=#{unitCd}, startDate=#{startDate}, 
+  			endDate=#{endDate}, updId=#{updId}, updDt=now() 
+  		WHERE id=#{id}
+    </update>
+    
+    <!-- USER -->
+	
+</mapper>

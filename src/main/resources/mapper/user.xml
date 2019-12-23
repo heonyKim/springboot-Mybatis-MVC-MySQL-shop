@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.repository.UserRepository">
+
+	<!-- ADMIN -->
+	<select id="findAll" resultType="com.example.shop.model.User">
+		SELECT u.email, u.addr, u.phone, c.codeNm, u.authFg, u.insDt 
+		FROM user u 
+		INNER JOIN code c ON u.role = c.code AND c.codeGbn = 'ROLE' 
+		WHERE u.delDt is null
+		ORDER BY u.id desc
+	</select>
+	
+	<!-- <update id="update">
+  		UPDATE user SET password=#{password}, email=#{email} WHERE id=#{id}
+    </update> -->
+	
+	
+	<!-- USER -->
+	<select id="findByEmailCheck" resultType="Integer">
+		SELECT COUNT(*) FROM user WHERE email = #{email}
+	</select>
+	
+	<select id="findByEmail" resultType="com.example.shop.model.User">
+		SELECT * FROM user WHERE email = #{email} AND delDt is null
+	</select>
+
+	<insert id="save">
+		INSERT INTO user VALUES(null, #{email}, #{password}, #{addr}, #{phone}, '01', 'N', #{authCode}, now(), null, null)
+	</insert>
+	
+	<update id="updateAuth">
+  		UPDATE user SET authFg='Y' WHERE email=#{email}
+    </update>
+</mapper>

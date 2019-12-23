@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.repository.MainRepository">
+	
+	<select id="newUserCnt" resultType="Integer">
+		SELECT count(*) FROM user WHERE DATE(insDt) = DATE(#{date})
+	</select>
+	
+	<select id="orderCheckCnt" resultType="Integer">
+		SELECT count(*) FROM orderInfo WHERE deliveryCd = '01' AND DATE(orderDt) = DATE(#{date})
+	</select>
+	
+	<select id="sellCnt" resultType="Integer">
+		SELECT count(distinct orderNo) FROM orderInfo WHERE DATE(orderDt) = DATE(#{date}) 
+	</select>
+	
+	<select id="sellAmountSum" resultType="Integer">
+		SELECT ifnull(sum(amount), 0) FROM orderInfo WHERE DATE(orderDt) = DATE(#{date})
+	</select>
+	
+	<select id="dailySellAmount" resultType="hashmap">
+		SELECT DATE(orderDt) as 'orderDate', sum(amount) as 'amount'
+		FROM orderInfo
+		WHERE DATE(orderDt) BETWEEN DATE(#{beforeDate}) AND DATE(#{date})
+		GROUP BY DATE(orderDt)
+	</select>
+	
+	<select id="sellAmountPercentOfCategory" resultType="hashmap">
+		SELECT c.codeNm as 'categoryNm', sum(o.amount) as 'amount'
+		FROM orderInfo o
+		INNER JOIN product p ON o.productId = p.id
+		INNER JOIN code c ON p.categoryCd = c.code AND c.codeGbn = 'PRODUCT'
+		WHERE DATE(orderDt) BETWEEN DATE(#{beforeDate}) AND DATE(#{date})
+		GROUP BY c.codeNm
+		ORDER BY amount desc
+		LIMIT 6;
+	</select>
+	
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.repository.CodeRepository">
+	<!-- ADMIN -->
+	<select id="codeList" resultType="com.example.shop.model.Code">
+		SELECT * FROM code ORDER BY codeGbn, code
+	</select>
+	
+	<select id="codeCheck" resultType="Integer">
+		SELECT count(*) FROM code WHERE codeGbn=#{codeGbn} AND code=#{code}
+	</select>
+	
+	<insert id="codeInsert">
+		INSERT INTO code VALUES(null, #{codeGbn}, #{code}, #{codeNm}, #{useFg}, #{insId}, now(), #{updId}, now())
+	</insert>
+	
+	<update id="codeUpdate">
+		UPDATE code SET codeGbn=#{codeGbn}, code=#{code}, codeNm=#{codeNm}, useFg=#{useFg}, updId=#{updId}, updDt=now() WHERE id=#{id}
+	</update>
+	
+	<select id="codeRequest" resultType="com.example.shop.model.Code">
+		SELECT * FROM code WHERE codeGbn=#{codeGbn} AND useFg='Y' AND code not in ('00') ORDER BY code;
+	</select>
+	
+	<!-- USER -->
+	<select id="productCode" resultType="com.example.shop.model.Code">
+		SELECT * FROM code WHERE codeGbn = 'PRODUCT';
+	</select>
+	
+</mapper>
