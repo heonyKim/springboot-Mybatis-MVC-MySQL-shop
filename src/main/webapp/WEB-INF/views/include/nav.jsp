@@ -87,7 +87,7 @@
                 <span class="badge badge-light">88</span>
                 </a></li>
             	<li class="nav-item"><a class="nav-link" href="#"><span id="loginUser">${principal.user.email}</span> 안녕하세요</a></li>
-            	<li class="nav-item"><a class="nav-link" href="/user/logout">Logout</a></li>
+            	<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
             	
             	</c:otherwise>
             </c:choose>

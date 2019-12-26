@@ -6,7 +6,7 @@
 	<footer class="py-5 bg-dark">
 		<div class="container">
 			<p class="m-0 text-center text-white">Copyright &copy; Your Website 2019 
-			<c:if test="${principal.user != null}">
+			<c:if test="${principal.user.role eq 99}">
 			<a class="nav-link" href="/admin/main">Admin</a>
 			</c:if>
 			</p>

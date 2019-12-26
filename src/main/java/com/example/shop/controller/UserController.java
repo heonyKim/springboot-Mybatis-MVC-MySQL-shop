@@ -1,7 +1,5 @@
 package com.example.shop.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -37,14 +35,7 @@ public class UserController {
 	public String userLogin() {
 		return "redirect:/";
 	}
-	
-	@GetMapping("/logout")
-	public String userLogout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/";
-	}
-	
-	
+
 	@GetMapping("/joinForm")
 	public String userJoinForm() {
 		return "/user/joinForm";
