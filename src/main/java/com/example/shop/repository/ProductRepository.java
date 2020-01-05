@@ -12,6 +12,9 @@ public interface ProductRepository {
 	int productDelete(Product product);
 	
 	//USER★★★★★★★★
-	List<Product> productBest3();
-	Product productView(int id);
+	List<Product> findAll(String today);
+	List<Product> productBest3(String today);
+	List<Product> productCategoryList(String today,int cd);
+	Product productView(int id, String today);
+	
 }

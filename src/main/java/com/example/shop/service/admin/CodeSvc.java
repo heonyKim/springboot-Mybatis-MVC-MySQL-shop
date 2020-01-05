@@ -47,24 +47,19 @@ public class CodeSvc {
 	}
 	
 	public String codeUpdate(Code code) {
-		int check = codeCheck(code);
 		String resultStr = "";
 		
-		if(check <= 0) {
-			try {
-				int result = codeRep.codeUpdate(code);
-				
-				if(result > 0) {
-					resultStr = "success";
-				} else {
-					resultStr = "fail";
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+		try {
+			int result = codeRep.codeUpdate(code);
+			
+			if(result > 0) {
+				resultStr = "success";
+			} else {
 				resultStr = "fail";
 			}
-		} else {
-			resultStr = "duplicate";
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultStr = "fail";
 		}
 		
 		return resultStr;

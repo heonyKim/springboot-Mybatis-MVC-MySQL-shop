@@ -23,5 +23,66 @@
 	</update>
 	
 	<!-- USER -->
+	<select id="orderCartList" resultType="com.example.shop.model.Order">
+		SELECT c.*, p.productNm, p.price, p.filePath, u.email
+		FROM cart c
+		INNER JOIN product p ON c.productId = p.id
+		INNER JOIN user u ON c.insId = u.id
+		WHERE c.insId = #{id}
+	</select>
+	
+	<select id="orderSaleList" resultType="com.example.shop.model.Sale">
+		SELECT s.*, cd.codeNm as 'unitNm'
+		FROM sale s
+		INNER JOIN cart c on s.productId = c.productId
+		INNER JOIN code cd on s.unitCd = cd.code AND cd.codeGbn = 'UNIT'
+		WHERE c.insId = #{id};
+	</select>
+	
+	<select id="orderCoupon" resultType="com.example.shop.model.Coupon">
+		SELECT c.*, cd.codeNm as 'unitNm'
+		FROM coupon c
+		INNER JOIN code cd ON c.unitCd = cd.code AND cd.codeGbn = 'UNIT'
+		WHERE c.code = #{code}
+	</select>
+	
+	<select id="orderCheck" resultType="String">
+		SELECT distinct orderNo FROM orderInfo
+		WHERE orderNo like CONCAT(#{today},'%')
+		ORDER BY orderNo desc limit 1
+	</select>
+	
+	<insert id="orderInsert">
+		INSERT INTO orderInfo values(null, #{orderNo}, #{productId}, #{cnt}, #{recipient}, #{addr}, #{phone}, #{discountAmt}, #{amount}, #{paymentCd}, '01', now(), #{insId}, now(), null);
+	</insert>
+	
+	<update id="orderUpdatePayment">
+		UPDATE orderInfo SET paymentCd=#{paymentCd}, deliveryCd=#{deliveryCd} WHERE orderNo=#{orderNo}
+	</update>
+	
+	<select id="orderResultView" resultType="com.example.shop.model.Order">
+		SELECT o.*, c1.codeNm as 'deliveryNm', c2.codeNm as 'paymentNm', p.productNm, p.filePath
+		FROM orderInfo o
+		INNER JOIN code c1 ON o.deliveryCd = c1.code AND c1.codeGbn = 'DELIVERY'
+		INNER JOIN code c2 ON o.paymentCd = c2.code AND c2.codeGbn = 'PAYMENT'
+		INNER JOIN product p ON o.productId = p.id
+		WHERE orderNo = #{orderNo};
+	</select>
+	
+	<select id="orderListAll" resultType="com.example.shop.model.Order">
+		SELECT distinct o.orderNo, c.codeNm as 'deliveryNm'
+		FROM orderInfo o
+		INNER JOIN user u ON o.insId = u.id
+		INNER JOIN code c ON o.deliveryCd = c.code AND c.codeGbn = 'DELIVERY'
+		WHERE o.insId = #{id}
+		ORDER BY o.orderNo desc;
+	</select>
+	
+	<select id="orderListDetail" resultType="com.example.shop.model.Order">
+		SELECT o.*, p.productNm
+		FROM orderInfo o
+		INNER JOIN product p ON o.productId = p.id
+		WHERE o.orderNo = #{orderNo}
+	</select>
 	
 </mapper>

@@ -1,3 +1,4 @@
+// ADMIN
 function formClear(){
 	$("#orderNo").val("");
 	$("#productList").val("");
@@ -107,6 +108,352 @@ function orderUpdate(){
 			} else {
 				alert("상태변경 중 오류가 발생하였습니다.\n입력한 정보를 다시 확인해 주세요.");
 			}
+		},
+		error: function(request, status, error){
+			console.log("code:" + request.status);
+			console.log("message:" + request.responseText);
+			console.log("error:" + error);
+		}
+	});
+}
+
+
+// USER
+function orderCartList(){
+	$.ajax({
+		async: false, 
+		url: "/order/cart/list",
+		type: "get", 
+		contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		data: false,
+		dataType: "json",
+		success: function(data){
+			var cartListHtml = ``;
+			var sum = 0;
+			
+			$.each(data, function(index, item){
+				$.each(item, function(index, jsonData){
+					cartListHtml += `<tr>`;
+					cartListHtml += `	<td style="vertical-align: middle;">`;
+					cartListHtml += `		<img src="` + jsonData.filePath + `" width="80px"/>`;
+					cartListHtml += `		<span style="font-size: 1.25em; font-weight: 500;">` + jsonData.productNm + `</span>`;
+					cartListHtml += `		<input type="hidden" value="` + jsonData.productId + `" />`;
+					cartListHtml += `	</td>`;
+					cartListHtml += `	<td style="vertical-align: middle;"><h5>` + number_format(jsonData.price) + `원</h5></td>`;
+					cartListHtml += `	<td style="vertical-align: middle;"><h5>` + jsonData.cnt + `</h5></td>`;
+					cartListHtml += `	<td style="vertical-align: middle;"><h5>` + number_format(jsonData.price * jsonData.cnt) + `원</h5></td>`;
+					cartListHtml += `</tr>`;
+					
+					sum += jsonData.price * jsonData.cnt;
+				});
+			});
+			
+			var cartListResult = orderCartListResult(sum);
+			$("#cartList").html(cartListHtml);
+			$("#cartList").append(cartListResult);
+		},
+		error: function(request, status, error){
+			console.log("code:" + request.status);
+			console.log("message:" + request.responseText);
+			console.log("error:" + error);
+		}
+	});
+}
+
+function orderCartListResult(sum){
+	var cartListHtml = ``;
+	cartListHtml += `<tr>`;
+	cartListHtml += `	<td colspan="4" class="text-right">`;
+	cartListHtml += `		<div class="mb-3">상품 총 금액 : <span id="totalAmt">` + number_format(sum) + `</span>원</div>`;
+	cartListHtml += `		<div class="mb-3">`;
+	cartListHtml += `			<input type="checkbox" id="couponFg" name="couponFg" onClick="applyCouponFg();" class="mb-3"/> 쿠폰 적용`;
+	cartListHtml += `			&nbsp; <input type="text" id="coupon" name="coupon" placeholder="쿠폰번호를 입력하세요." disabled="disabled"/>`;
+	cartListHtml += `			<button type="button" id="btnCoupon" onClick="applyCoupon();" disabled="disabled">적용</button>`;
+	cartListHtml += `			<br/><span id="discountAmt" style="color: var(--red);"></span>`;
+	cartListHtml += `			<input type="hidden" id="discount" value="0원"/>`;
+	cartListHtml += `		</div>`;
+	cartListHtml += `		<div class="mb-3">`;
+	cartListHtml += `			<h4 style="color: var(--blue);">최종 결제 금액 : <span id="resultAmt">` + number_format(sum) + `</span>원</h4>`;
+	cartListHtml += `		</div>`;
+	cartListHtml += `	</td>`;
+	cartListHtml += `</tr>`;
+	return cartListHtml;
+}
+
+function applyCouponFg(){
+	if($("#couponFg").is(":checked") == true){
+		$("#coupon").removeAttr("disabled");
+		$("#btnCoupon").removeAttr("disabled");
+	} else {
+		$("#coupon").attr("disabled", "disabled");
+		$("#btnCoupon").attr("disabled", "disabled");
+	}
+	
+	$("#coupon").val("");
+	$("#discountAmt").html("");
+	$("#resultAmt").html(number_format($("#totalAmt").text()));
+}
+
+function applyCoupon(){
+	var couponCode = $("#coupon").val();
+	
+	$.ajax({
+		url: "/order/coupon",
+		type: "post", 
+		data: {"code" : couponCode},
+		dataType: "json",
+		success: function(data){
+			if(data.data != "fail"){
+				var discount = data.data.substring(0, data.data.length-1);
+				var totalAmt = $("#totalAmt").text().replace(",", "");
+				var resultAmt = $("#resultAmt").text().replace(",", "");
+				
+				var discountAmt = 0;
+				var resultAmt = 0;
+				
+				if(data.data.substr(-1) == "%"){
+					discountAmt = Math.round(totalAmt * (discount/100));
+				} else {
+					discountAmt = discount;
+				}
+				
+				resultAmt = totalAmt - discountAmt;
+				$("#discountAmt").html("할인 금액 : " + number_format(discountAmt) + "원");
+				$("#resultAmt").html(number_format(resultAmt));
+				$("#discount").val(data.data);
+			} else {
+				alert("쿠폰 코드가 유효하지 않거나 적용 가능한 기간이 아닙니다.");
+				$("#discountAmt").html("");
+				$("#resultAmt").html(number_format($("#totalAmt").text()));
+			}
+		},
+		error: function(request, status, error){
+			console.log("code:" + request.status);
+			console.log("message:" + request.responseText);
+			console.log("error:" + error);
+		}
+	});
+}
+
+function insertOrder(){
+	var orderNo = getOrderNo();
+	var listCnt = document.getElementsByTagName("td").length;
+	var sum = 0;
+	
+	var result = "";
+	
+	for(i=0; i<(listCnt-1)/4; i++){
+		var productId = document.getElementsByTagName("td")[(4*i)].childNodes[5].value;
+		var price = document.getElementsByTagName("td")[(4*i)+1].childNodes[0].innerText.replace(",", "").replace("원", "");
+		var cnt = document.getElementsByTagName("td")[(4*i)+2].childNodes[0].innerText;
+		var discountAmt = $("#discount").val();
+		
+		if(discountAmt.substr(-1) == "%"){
+			discountAmt = Math.round(price * cnt * (discountAmt.substring(0, discountAmt.length-1)/100));
+		} else {
+			discountAmt = discountAmt.substring(0, discountAmt.length-1) / ((listCnt-1)/4);
+		}
+		
+		sum += (price * cnt) - discountAmt;
+		
+		$.ajax({
+			async: false, 
+			url: "/order/insert",
+			type: "post", 
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			data: {
+				"orderNo" : orderNo,
+				"productId" : productId,
+				"cnt" : cnt,
+				"recipient" : $("#recipient").val(),
+				"addr" : $("#addr").val(),
+				"phone" : $("#phone").val(),
+				"discountAmt" : discountAmt,
+				"amount" : price * cnt,
+				"paymentCd" : "00"
+			},
+			dataType: "json",
+			success: function(data){
+				if(data.data == "success"){
+					result = "success";
+				} else {
+					result = "fail";
+				}
+			},
+			error: function(request, status, error){
+				console.log("code:" + request.status);
+				console.log("message:" + request.responseText);
+				console.log("error:" + error);
+				
+				result = "fail";
+			}
+		});
+		
+		if(result == "fail"){
+			break;
+		}
+	}
+	
+	if(result == "success"){
+		var paymentCd = $("#rdCash").is(":checked")? "01" : $("#rdCard").is(":checked")? "02" : "00";
+		
+		if(paymentCd == "02"){
+			imp(orderNo, sum, $("#recipient").val());
+		} else {
+			updatePayment(orderNo, paymentCd);
+			location.href = "/order/result/" + orderNo;
+		}
+	}
+}
+
+function updatePayment(orderNo, paymentCd){
+	$.ajax({
+		async: false, 
+		url: "/order/update",
+		type: "post", 
+		contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		data: {
+			"orderNo" : orderNo,
+			"paymentCd" : paymentCd
+		},
+		dataType: "json",
+		success: function(data){
+			if(data.data == "success"){
+				result = "success";
+			} else {
+				result = "fail";
+			}
+		},
+		error: function(request, status, error){
+			console.log("code:" + request.status);
+			console.log("message:" + request.responseText);
+			console.log("error:" + error);
+		}
+	});
+	
+	if(result == "success"){
+		location.href = "/order/result/" + orderNo;
+	}
+}
+
+function getOrderNo(){
+	var orderNo = "";
+
+	$.ajax({
+		async: false, 
+		url: "/order/check",
+		type: "get", 
+		contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		data: false,
+		dataType: "json",
+		success: function(data){
+			orderNo = data.data;
+		},
+		error: function(request, status, error){
+			console.log("code:" + request.status);
+			console.log("message:" + request.responseText);
+			console.log("error:" + error);
+		}
+	});
+	
+	return orderNo;
+}
+
+function insertCheck(){
+	if($("#recipient").val() == ""){
+		alert("수령인을 입력해주세요.");
+		return false;
+	} else if($("#phone").val() == "") {
+		alert("연락처를 입력해주세요.");
+		return false;
+	} else if($("#addr").val() == "") {
+		alert("주소를 입력해주세요.");
+		return false;
+	} else if(!($("#rdCash").is(":checked") || $("#rdCard").is(":checked"))) {
+		alert("결제수단을 선택해주세요.");
+		return false;
+	} else {
+		insertOrder();
+	}
+}
+
+function orderResult(orderNo){
+	$.ajax({
+		async: false, 
+		url: "/order/result/view",
+		type: "get", 
+		data: {"orderNo" : orderNo},
+		dataType: "json",
+		success: function(data){
+			var orderListHtml = ``;
+			var amount = 0;
+			var discountAmt = 0;
+			
+			$.each(data, function(index, item){
+				$.each(item, function(index, jsonData){
+					orderListHtml += `<tr>`;
+					orderListHtml += `	<td style="vertical-align: middle;">`;
+					orderListHtml += `		<img src="` + jsonData.filePath + `" width="80px"/>`;
+					orderListHtml += `		<span style="font-size: 1.25em; font-weight: 500;">` + jsonData.productNm + `</span>`;
+					orderListHtml += `		<input type="hidden" value="` + jsonData.productId + `" />`;
+					orderListHtml += `	</td>`;
+					orderListHtml += `	<td style="vertical-align: middle;"><h5>` + jsonData.cnt + `</h5></td>`;
+					orderListHtml += `	<td style="vertical-align: middle;"><h5>` + number_format(jsonData.amount) + `원</h5></td>`;
+					orderListHtml += `</tr>`;
+					
+					$("#recipient").html(jsonData.recipient);
+					$("#phone").html(jsonData.phone);
+					$("#addr").html(jsonData.addr);
+					
+					$("#paymentNm").html(jsonData.paymentNm);
+					$("#deliveryNm").html(jsonData.deliveryNm);
+					
+					if(jsonData.deliveryNm == "입금확인중"){
+						$("#paymentNm").append(" [입금 계좌 : (농협) 000-0000-0000-00]");
+					}
+					
+					amount += jsonData.amount;
+					discountAmt += jsonData.discountAmt;
+				});
+			});
+			
+			$("#amount").html(number_format(amount));
+			$("#discountAmt").html(number_format(discountAmt));
+			$("#resultAmt").html(number_format(amount - discountAmt));
+			
+			$("#orderList").html(orderListHtml);
+		},
+		error: function(request, status, error){
+			console.log("code:" + request.status);
+			console.log("message:" + request.responseText);
+			console.log("error:" + error);
+		}
+	});
+}
+
+function orderListAll(){
+	$.ajax({
+		async: false, 
+		url: "/order/list/all",
+		type: "get", 
+		data: false,
+		dataType: "json",
+		success: function(data){
+			var orderListHtml = ``;
+			
+			$.each(data, function(index, item){
+				$.each(item, function(index, jsonData){
+					orderListHtml += `<tr>`;
+					orderListHtml += `	<td style="vertical-align: middle;"><h5>`+ jsonData.orderNo + `</h5></td>`;
+					orderListHtml += `	<td style="vertical-align: middle;"><h5>`+ jsonData.productNm + `</h5></td>`;
+					orderListHtml += `	<td style="vertical-align: middle;"><h5>` + jsonData.orderNo.substr(0, 8).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3') + `</h5></td>`;
+					orderListHtml += `	<td style="vertical-align: middle;"><h5>` + number_format(jsonData.amount - jsonData.discountAmt) + `원</h5></td>`;
+					orderListHtml += `	<td style="vertical-align: middle;"><h5>` + jsonData.deliveryNm + `</h5></td>`;
+					orderListHtml += `</tr>`;
+				});
+			});
+			
+			$("#orderList").html(orderListHtml);
 		},
 		error: function(request, status, error){
 			console.log("code:" + request.status);

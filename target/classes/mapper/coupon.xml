@@ -21,4 +21,8 @@
     </update>
 	
 	<!-- USER -->
+	<select id="findCoupon" resultType="com.example.shop.model.Coupon">
+		SELECT * FROM coupon WHERE code=#{code}
+	</select>	
+	
 </mapper>

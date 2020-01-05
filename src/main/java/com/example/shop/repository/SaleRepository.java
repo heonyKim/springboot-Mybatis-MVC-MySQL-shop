@@ -14,4 +14,5 @@ public interface SaleRepository {
 	int update(Sale sale);
 	
 	//USER
+	List<Product> saleList(String today);
 }

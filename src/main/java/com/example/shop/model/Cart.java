@@ -22,6 +22,10 @@ public class Cart {
 	private String filePath;
 	private String productNm;
 	private int price;
+	private int saleId;
+	private int amount;
+	private String unitCd;
+	private String endDate;
 	
 	
 }

@@ -1,8 +1,11 @@
 package com.example.shop.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.shop.model.User;
@@ -51,6 +54,8 @@ public class UserDetail implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();   
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRoleNm()));
+        return authorities;
 	}
 }

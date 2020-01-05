@@ -30,5 +30,11 @@
     </update>
     
     <!-- USER -->
-	
+	<select id="saleList" resultType="com.example.shop.model.Product">
+		SELECT p.*,(select avg(rating) from comment cm where p.id=cm.productId and delId is null group by productId) as ratingAvg, 
+		s.id saleId,s.amount,s.unitCd,s.startDate,s.endDate FROM product p 
+		LEFT OUTER JOIN sale s ON p.id=s.productId and endDate>=#{today}
+		WHERE delId is null and s.id is not null 
+        ORDER BY id DESC
+	</select>
 </mapper>

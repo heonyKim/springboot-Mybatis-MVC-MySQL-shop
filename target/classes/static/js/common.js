@@ -31,7 +31,7 @@ function codeRequest(code){
 	
 	$.ajax({
 		async: false,
-		url: "/admin/code/" + code,
+		url: "/code/" + code,
 		type: "get", 
 		contentType: "application/x-www-form-urlencoded; charset=utf-8",
 		data: false,
@@ -53,6 +53,35 @@ function codeRequest(code){
 	});
 	
 	return categoryCdHtml;
+}
+
+function codeRequestData(code){
+	var codeList = [];
+	
+	$.ajax({
+		async: false,
+		url: "/code/" + code,
+		type: "get", 
+		contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		data: false,
+		dataType: "json",
+		success: function(data){
+			$.each(data, function(index, item){
+				if(item.id != 0 && typeof(item.id) != "undefined"){
+					codeList.push(item.code + ":" + item.codeNm);
+				} else {
+					codeList.push("00:조회실패");
+				}
+			});
+		},
+		error: function(request, status, error){
+			console.log("code:" + request.status);
+			console.log("message:" + request.responseText);
+			console.log("error:" + error);
+		}
+	});
+	
+	return codeList;
 }
 
 function number_format(number, decimals, dec_point, thousands_sep) {

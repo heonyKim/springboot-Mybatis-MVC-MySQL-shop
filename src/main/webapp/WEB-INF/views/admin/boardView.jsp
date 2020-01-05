@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -31,18 +32,55 @@
 										<h6 class="m-0 font-weight-bold text-primary">글확인</h6>
 									</div>
 									<div id="originalForm" class="card-body">
-										<div style="font-weight: bold; font-size: 20px">
-											${board.title}
-										</div>
-										<div style="font-size: 8px; margin-top: 10px">
-											<span style="margin-right: 15px">작성자 : ${board.email}</span>
-											<span style="margin-right: 15px">작성일시 : ${board.insDt}</span>
-											<span>최종 수정일시 : ${board.updDt}</span>
-										</div>
-										<hr />
-										<div>
-											${board.content}
-										</div>
+										<c:if test="${type eq 'board'}">
+											<div style="font-weight: bold; font-size: 20px">
+												${board.title}
+											</div>
+										</c:if>
+										<c:choose>
+											<c:when test="${type eq 'board'}">
+												<div style="font-size: 8px; margin-top: 10px">
+													<span style="margin-right: 15px">작성자 : ${board.email}</span>
+													<span style="margin-right: 15px">작성일시 : ${board.insDt}</span>
+													<span>최종 수정일시 : ${board.updDt}</span>
+												</div>
+												<hr />
+												<div>
+													${board.content}
+												</div>
+												<input type="hidden" id="categoryCd" value="${board.categoryCd}" />
+												<input type="hidden" id="id" value="${board.id}" />
+											</c:when>
+											<c:otherwise>
+												<div style="font-size: 8px; margin-top: 10px">
+													<span style="margin-right: 15px">작성자 : ${comment.email}</span>
+													<span style="margin-right: 15px">작성일시 : ${comment.insDt}</span>
+													<span style="margin-right: 15px">상품명 : ${comment.productNm}</span>
+													<span>평점 : ${comment.rating}</span>
+												</div>
+												<hr />
+												<div>
+													${comment.content}
+												</div>
+												<input type="hidden" id="categoryCd" value="99" />
+												<input type="hidden" id="id" value="${comment.id}" />
+											</c:otherwise>
+										</c:choose>
+										<input type="hidden" id="type" value="${type}" />
+										
+										<c:if test="${type eq 'comment'}">
+											<c:if test="${not empty comment.answerContent}">
+												<div id="divReply" class="card-body" style="background-color: #f0f0f0; margin-top:20px;">
+													<h3>답변내용</h3>
+													<div>
+														${comment.answerContent}
+													</div>
+													<input type="hidden" id="parentId" name="parentId" value="${comment.parentId}" />
+													<input type="hidden" id="answerId" name="answerId" value="${comment.answerId}" />
+												</div>
+											</c:if>
+										</c:if>
+										
 										<div id="divBtns" class="text-right p-3">
 											<button type="button" id="btnCancel" class="btn btn-primary mb-1">목록</button>
 										</div>
@@ -69,11 +107,20 @@
 		<!-- Page level custom scripts -->
 		<script>
 			$(document).ready(function() {
-				addBoardBtn(${board.categoryCd}, ${board.id});
+				var type = $("#type").val();
+				var id = $("#id").val();
+				
+				if(type == "board"){
+					addBoardBtn(type, id);
+				} else {
+					addBoardBtn("99", id);
+				}
 			});
 		
 			$("#btnCancel").on("click", function(){
-				location.href="/admin/board";
+				//var categoryCd = $("#categoryCd").val();
+				//location.href="/admin/board/list/" + categoryCd;
+				location.href="/admin/board/list";
 			});
 		</script>
 	</body>

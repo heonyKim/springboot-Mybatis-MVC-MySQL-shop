@@ -6,7 +6,7 @@
 	<footer class="py-5 bg-dark">
 		<div class="container">
 			<p class="m-0 text-center text-white">Copyright &copy; Your Website 2019 
-			<c:if test="${principal.user.role eq 99}">
+			<c:if test="${principal.user.roleCd eq 99}">
 			<a class="nav-link" href="/admin/main">Admin</a>
 			</c:if>
 			</p>
@@ -25,5 +25,6 @@
 	<script src="/bootstrap/board/vendor/jquery/jquery.min.js"></script>
 	<script src="/bootstrap/board/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="/js/common.js"></script>
 </body>
 </html>

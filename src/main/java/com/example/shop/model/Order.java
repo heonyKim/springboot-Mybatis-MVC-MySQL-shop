@@ -12,6 +12,7 @@ public class Order {
 	private String orderNo;
 	private int productId;
 	private int cnt;
+	private String recipient;
 	private String addr;
 	private String phone;
 	private int discountAmt;
@@ -27,4 +28,6 @@ public class Order {
 	private String productNm;
 	private String paymentNm;
 	private String deliveryNm;
+	private int price;
+	private String filePath;
 }

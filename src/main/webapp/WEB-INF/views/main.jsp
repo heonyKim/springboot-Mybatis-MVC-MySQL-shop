@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
+
 <%@include file="/WEB-INF/views/include/nav.jsp" %>
 	<!-- Page Content -->
 	<div class="container">
@@ -37,21 +39,51 @@
 					<!-- BEST3 START -->
 					<div class="col-lg-12"><h1 class="my-4">Best3</h1></div>
 					<c:forEach var="best" items="${best}">
-					<div class="col-lg-4 col-md-4 mb-4">
-						<div class="card h-100">
-							<a href="/product/${best.id}"><img class="card-img-top" style = "max-width: 100%; height: auto;" src="${best.filePath}" alt=""></a>
-							<div class="card-body">
-								<h4 class="card-title">
-									<a href="/product/${best.id}">${best.productNm}</a>
-								</h4>
-								<h5>${best.price}원</h5>
-								<p class="card-text">${best.description}</p>
+						<c:choose>
+						
+							<c:when test="${best.saleId>0}">	<!-- saleProduct -->
+							<div class="col-lg-4 col-md-4 mb-4">
+								<div class="card h-100">
+									<a href="/product/${best.id}"><img class="card-img-top" src="${best.filePath}" alt=""></a>
+									<div class="card-body">
+										<h4 class="card-title">
+											<a href="/product/${best.id}">${best.productNm}</a>
+										</h4>
+										<span style="color: #777777; text-decoration: line-through;"><fmt:formatNumber value="${best.price}" type="number"></fmt:formatNumber>원</span>
+										<h5>
+											<fmt:formatNumber value="${best.salePrice}" type="number"></fmt:formatNumber>
+											원
+										</h5>
+										<p class="card-text">~${best.endDate}</p>
+									</div>
+									<div class="card-footer">
+										<b style="color:#EBE028;">&#9733;</b> ${best.ratingAvg}
+									</div>
+								</div>
 							</div>
-							<div class="card-footer">
-								<small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+							</c:when>
+							
+							<c:otherwise>
+							<div class="col-lg-4 col-md-4 mb-4">
+								<div class="card h-100">
+									<a href="/product/${best.id}"><img class="card-img-top" style="max-width: 100%; height: auto;" src="${best.filePath}" alt=""></a>
+									<div class="card-body">
+										<h4 class="card-title">
+											<a href="/product/${best.id}">${best.productNm}</a>
+										</h4>
+										<h5>
+											<fmt:formatNumber value="${best.price}" pattern="#,###"></fmt:formatNumber>
+											원
+										</h5>
+										<%-- <p class="card-text">${best.description}</p> 있으면 지저분함--%>
+									</div>
+									<div class="card-footer">
+										<b style="color:#EBE028;">&#9733;</b> ${best.ratingAvg}
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
+							</c:otherwise>
+						</c:choose>
 					</c:forEach>
 					
 				</div>
@@ -61,22 +93,54 @@
 					<!-- PRODUCT LIST -->
 				<div class="row">
 					<c:forEach var="listAll" items="${listAll}">
-					<div class="col-lg-4 col-md-4 mb-4">
-						<div class="card h-100">
-							<a href="/product/${listAll.id}"><img class="card-img-top" src="${listAll.filePath}" alt=""></a>
-							<div class="card-body">
-								<h4 class="card-title">
-									<a href="/product/${listAll.id}">${listAll.productNm}</a>
-								</h4>
-								<h5>${listAll.price}원</h5>
-								<%-- <p class="card-text">${listAll.description}</p> 있으면 지저분함--%>
+						<c:choose>
+						
+							<c:when test="${listAll.saleId>0}">	<!-- saleProduct -->
+							<div class="col-lg-4 col-md-4 mb-4">
+								<div class="card h-100">
+									<a href="/product/${listAll.id}"><img class="card-img-top" src="${listAll.filePath}" alt=""></a>
+									<div class="card-body">
+										<h4 class="card-title">
+											<a href="/product/${listAll.id}">${listAll.productNm}</a>
+										</h4>
+										<span style="color: #777777; text-decoration: line-through;"><fmt:formatNumber value="${listAll.price}" type="number"></fmt:formatNumber>원</span>
+										<h5>
+											<fmt:formatNumber value="${listAll.salePrice}" type="number"></fmt:formatNumber>
+											원
+										</h5>
+										<p class="card-text">~${listAll.endDate}</p>
+									</div>
+									<div class="card-footer">
+										<b style="color:#EBE028;">&#9733;</b> ${listAll.ratingAvg}
+									</div>
+								</div>
 							</div>
-							<div class="card-footer">
-								<small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+							</c:when>
+							
+							<c:otherwise>
+							<div class="col-lg-4 col-md-4 mb-4">
+								<div class="card h-100">
+									<a href="/product/${listAll.id}"><img class="card-img-top" style="max-width: 100%; height: auto;" src="${listAll.filePath}" alt=""></a>
+									<div class="card-body">
+										<h4 class="card-title">
+											<a href="/product/${listAll.id}">${listAll.productNm}</a>
+										</h4>
+										<h5>
+											<fmt:formatNumber value="${listAll.price}" pattern="#,###"></fmt:formatNumber>
+											원
+										</h5>
+										<%-- <p class="card-text">${listAll.description}</p> 있으면 지저분함--%>
+									</div>
+									<div class="card-footer">
+										<b style="color:#EBE028;">&#9733;</b> ${listAll.ratingAvg}
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
+							</c:otherwise>
+						</c:choose>
 					</c:forEach>
+					
+					
 
 				</div>
 				<!-- PRODUCT LIST END-->

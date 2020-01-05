@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -39,6 +40,7 @@
 											<thead class="thead-light">
 												<tr>
 													<th>번호</th>
+													<th>상태</th>
 													<th>제목</th>
 													<th>작성자</th>
 													<th>작성일</th>
@@ -80,7 +82,11 @@
 
 			$("#boardTable").on("click", "tr", function(){
 				boardData = $("#boardTable").DataTable().row(this).data();
-				location.href = "view/" + boardData.id;
+				if($("#categoryCd").val() == "99"){
+					location.href = "/admin/comment/view/" + boardData.id;
+				} else {
+					location.href = "view/" + boardData.id;
+				}
 			});
 		</script>
 	</body>

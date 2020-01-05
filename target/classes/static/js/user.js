@@ -30,7 +30,7 @@ function userList(){
 			{"data": "email"},
 			{"data": "addr"},
 			{"data": "phone"},
-			{"data": "role"},
+			{"data": "roleNm"},
 			{"data": "authFg"},
 			{data: "insDt",
 					render: function(data, type, row){return getDateFormat(data);}

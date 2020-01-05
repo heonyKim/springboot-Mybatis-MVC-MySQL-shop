@@ -28,13 +28,21 @@ function boardList(categoryCd){
 			},
 			columns: [
 				{"data": "rowNum"},
+				{"data": "rowNum",
+					render: function(data, type, row){return "";}},
 				{"data": "title"},
 				{"data": "email"},
 				{"data": "insDt",
 					render: function(data, type, row){return getDateFormat(data);}
 				}
-			]
+			],
+			columnDefs: [
+		        { targets: [1], visible: false},
+		    ]
 		});
+		
+		document.getElementsByTagName("th")[2].innerText = "제목";
+		
 	} else {
 		$("#boardTable").DataTable({
 			destroy:true,
@@ -62,13 +70,27 @@ function boardList(categoryCd){
 			},
 			columns: [
 				{"data": "rowNum"},
-				{"data": "title"},
+				{"data": "answerContent",
+					render: function(data, type, row){
+						if(data == "답변대기"){ 
+							return "<b style='color:blue'>" + data + "</b>";
+						} else {
+							return data;
+						}
+					}
+				},
+				{"data": "content"},
 				{"data": "email"},
 				{"data": "insDt",
 					render: function(data, type, row){return getDateFormat(data);}
 				}
-			]
+			],
+			columnDefs: [
+		        { targets: [1], visible: true},
+		    ]
 		});
+		
+		document.getElementsByTagName("th")[2].innerText = "내용";
 	}
 }
 
@@ -90,32 +112,63 @@ function addBoardBtn(categoryCd, id){
 	
 	appendHtml = ``;
 	if(categoryCd == "99"){
-		appendHtml += `<button type="button" id="btnReply" onClick="addBoardReplyForm(` + id + `)" class="btn btn-success mb-1">답글 쓰기</button>`;
+		var divFg = $("#divReply").length;
+		if(divFg == 1){
+			var answerId = $("#answerId").val();
+			appendHtml += `<button type="button" id="btnReplyDelete" onClick="commentDelete(` + answerId + `)" class="btn btn-danger mb-1">답글 지우기</button>`;
+		} else {
+			appendHtml += `<button type="button" id="btnReplyWrite" onClick="addBoardReplyForm(` + id + `)" class="btn btn-success mb-1">답글 쓰기</button>`;
+		}
 	} else {
-		appendHtml += `<button type="button" id="btnUpdate" onClick="location.href="'admin/board/updateForm/` + id + `'" class="btn btn-warning mb-1">수정</button>`;
+		appendHtml += `<button type="button" id="btnUpdate" onClick="location.href='/admin/board/updateForm/` + id + `'" class="btn btn-warning mb-1">수정</button>`;
 		appendHtml += `<button type="button" id="btnDelete" onClick="location.href='/admin/board/delete/` + id + `'" class="btn btn-danger mb-1">삭제</button>`;
 	}
 	$("#divBtns").append(appendHtml);
 }
 
 function addBoardReplyForm(id){
-	console.log(id);
+	removeBoardReplyForm(); 
 	appendHtml = ``;
 	appendHtml += `<div id="replyForm" class="card-body">`;
-	appendHtml += `	<form action="/admin/board/write" method="post">`;
+	appendHtml += `	<form action="/admin/comment/write" method="post">`;
 	appendHtml += `		<div class="form-group">`;
-	appendHtml += `			<textarea class="form-control" name="content" rows="10" placeholder="Please insert ther contents of post here"></textarea>`;
+	appendHtml += `			<textarea class="form-control" name="content" rows="10" placeholder="Please insert ther contents of comment's answer here"></textarea>`;
 	appendHtml += `		</div>`;
-	appendHtml += `		<input type="hidden" name="title" value="리뷰 답글" />`;
 	appendHtml += `		<input type="hidden" name="parentId" value="` + id + `" />`;
-	appendHtml += `		<input type="hidden" name="categoryCd" value="99" />`;
 	appendHtml += `		<div class="text-right">`;
 	appendHtml += `			<button type="submit" id="btnWrite" class="btn btn-success mb-1">작성</button>`;
-	appendHtml += `			<button type="button" id="btnCancel" class="btn btn-danger mb-1">취소</button>`;
+	appendHtml += `			<button type="button" id="btnCancel" onClick="removeBoardReplyForm();" class="btn btn-danger mb-1">취소</button>`;
 	appendHtml += `		</div>`;
 	appendHtml += `	</form>`;
 	appendHtml += `</div>`;
-	console.log(appendHtml);
 	
 	$("#originalForm").after(appendHtml);
+}
+
+function removeBoardReplyForm(){
+	$("#replyForm").remove();
+}
+
+function commentDelete(answerId){
+	$.ajax({
+		url: "/admin/comment/delete/" + answerId,
+		type: "post", 
+		dataType: "json",
+		success: function(data){
+			if(data.result === "success"){
+				$("#divReply").remove();
+				$("#btnReplyDelete").remove();
+				$("#divBtns").append(`<button type="button" id="btnReplyWrite" onClick="addBoardReplyForm(` + $("#id").val() + `)" class="btn btn-success mb-1">답글 쓰기</button>`);
+				alert("답글이 정상적으로 삭제되었습니다.");
+			} else {
+				alert("답글 삭제 중 오류가 발생하였습니다.\n다시 시도해 주세요.");
+			}
+		},
+		error: function(request, status, error){
+			console.log("code:" + request.status);
+			console.log("message:" + request.responseText);
+			console.log("error:" + error);
+			alert("답글 삭제 중 오류가 발생하였습니다.\n다시 시도해 주세요.");
+		}
+	});
 }

@@ -7,6 +7,12 @@ import com.example.shop.model.Comment;
 public interface CommentRepository {
 	//ADMIN
 	List<Comment> commentList();
+	Comment commentView(int id);
+	int commentWrite(Comment comment);
+	int commentDelete(Comment comment);
 	
 	//USER
+	List<Comment> productUserCommentList(int productId);
+	List<Comment> productAdminReplyList(int commentId);
+	
 }

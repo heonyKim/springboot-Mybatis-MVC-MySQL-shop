@@ -15,10 +15,13 @@ public class User {
 	private String password;
 	private String addr;
 	private String phone;
-	private int role;
+	private String roleCd;
 	private String authFg;
 	private String authCode;
 	private Timestamp insDt;
 	private String updDt;
 	private String delDt;
+	
+	private String roleNm;
+	private String role;
 }

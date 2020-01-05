@@ -1,6 +1,7 @@
 package com.example.shop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.shop.model.User;
 import com.example.shop.repository.UserRepository;
+import com.example.shop.security.UserDetail;
 import com.example.shop.service.EmailSvc;
 import com.example.shop.utils.Script;
 
@@ -101,25 +103,24 @@ public class UserController {
 	//////////////////////////////User Infomation////////////////////////////////////////
 	
 	@GetMapping("/info/updateForm")
-	public @ResponseBody String userInfoUpdateForm() {				//BCyrpt
-		String emailAuthNum = EmailSvc.HashedCode25("heony_design@naver.com");
-		return emailAuthNum;
-		//		return "/user/info/updateForm";				
+	public String userInfoUpdateForm(Model model,
+			@AuthenticationPrincipal UserDetail userDetail) {				//BCyrpt
+		User user = uRepo.findByEmail(userDetail.getUser().getEmail());
+		model.addAttribute("user",user);
+		return "/user/info/updateForm";				
 	}
 	
 	@PostMapping("/info/update")
-	public String userInfoUpdate() {					//BCyrpt
-		return "/";				
-	}
-	
-	@GetMapping("/info/changePasswordForm")		
-	public String userInfoChangePasswordForm() {		//BCyrpt
-		return "/user/info/changePasswordForm";			
-	}
-	
-	@PostMapping("/info/changePassword")			
-	public String userInfoChangePassword() {			//BCyrpt, 세션만료시켜서 다시 로그인 하게 만들자
-		return "/";
+	public @ResponseBody String userInfoUpdate(User user) {					//BCyrpt
+		String rawPassword = user.getPassword();
+		String password = passwordEnc.encode(rawPassword);
+		user.setPassword(password);
+		int result=uRepo.update(user);
+		if(result==1) {
+			return Script.hrefWithMsg("회원정보 수정이 완료되었습니다.", "/");
+		}else {
+			return Script.hrefWithMsg("회원정보 수정을 실패하였습니다.", "/");
+		}		
 	}
 	
 }

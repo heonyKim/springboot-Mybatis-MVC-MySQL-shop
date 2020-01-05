@@ -15,7 +15,7 @@
 				</li>
 	
 				<hr class="sidebar-divider">
-				<div class="sidebar-heading">Menus</div>
+				<div class="sidebar-heading">Menu</div>
 				<li class="nav-item">
 					<a class="nav-link" href="/admin/user">
 						<i class="fab fa-fw fa-wpforms"></i>
@@ -59,39 +59,5 @@
 					</a>
 				</li>
 	
-				<!-- SIDEBAR DELETE START -->
-				<hr class="sidebar-divider">
-				<div class="sidebar-heading">Sample</div>
-				<li class="nav-item">
-					<a class="nav-link collapsed" href="#"
-					data-toggle="collapse" data-target="#collapsePage"
-					aria-expanded="true" aria-controls="collapsePage"> <i
-						class="fas fa-fw fa-columns"></i> <span>Sample</span>
-					</a>
-					<div id="collapsePage" class="collapse"
-						aria-labelledby="headingPage" data-parent="#accordionSidebar">
-						<div class="bg-white py-2 collapse-inner rounded">
-							<h6 class="collapse-header">Example Pages</h6>
-							<a class="collapse-item" href="/sidebarTest/login.html">Login</a> <a
-								class="collapse-item" href="/sidebarTest/register.html">Register</a> <a
-								class="collapse-item" href="/sidebarTest/404.html">404 Page</a>
-								<a class="collapse-item" href="/sidebarTest/charts.html">Charts</a>
-								<a class="collapse-item" href="/sidebarTest/alerts.html">Alerts</a> <a
-								class="collapse-item" href="/sidebarTest/buttons.html">Buttons</a> <a
-								class="collapse-item" href="/sidebarTest/dropdowns.html">Dropdowns</a> <a
-								class="collapse-item" href="/sidebarTest/modals.html">Modals</a> <a
-								class="collapse-item" href="/sidebarTest/popovers.html">Popovers</a> <a
-								class="collapse-item" href="/sidebarTest/progress-bar.html">Progress Bars</a><a
-								class="collapse-item" href="/sidebarTest/forms.html">Forms</a>
-								<a class="collapse-item" href="/sidebarTest/imple-tables.html">Simple
-								Tables</a> <a class="collapse-item" href="/sidebarTest/datatables.html">DataTables</a><a
-								class="collapse-item" href="/sidebarTest/ui-colors.html">UI Colors</a>
-						</div>
-					</div>
-				</li>
-					
-				<hr class="sidebar-divider">
-				<div class="version" id="version-ruangadmin"></div>
-				<!-- SIDEBAR DELETE END -->
 			</ul>
 			<!-- Sidebar : include -->

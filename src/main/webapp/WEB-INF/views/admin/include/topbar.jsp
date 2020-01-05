@@ -17,7 +17,7 @@
 									<a class="dropdown-item" href="/">
 										<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>SHOP
 									</a>
-									<a class="dropdown-item" href="/admin/logout">
+									<a class="dropdown-item" href="/logout">
 										<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout
 									</a>
 								</div>

@@ -18,5 +18,9 @@ public class Comment {
 	private int delId;
 	private Timestamp delDe;
 	
+	private int rowNum;
 	private String productNm;
+	private String email;
+	private int answerId;
+	private String answerContent;
 }

@@ -11,4 +11,5 @@ public interface CouponRepository{
 	int update(Coupon coupon);
 	
 	//USER
+	Coupon findCoupon(String code);
 }

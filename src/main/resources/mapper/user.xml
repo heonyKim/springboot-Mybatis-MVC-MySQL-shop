@@ -4,16 +4,14 @@
 
 	<!-- ADMIN -->
 	<select id="findAll" resultType="com.example.shop.model.User">
-		SELECT u.email, u.addr, u.phone, c.codeNm, u.authFg, u.insDt 
+		SELECT u.email, u.addr, u.phone, c.codeNm as 'roleNm', u.authFg, u.insDt 
 		FROM user u 
-		INNER JOIN code c ON u.role = c.code AND c.codeGbn = 'ROLE' 
+		INNER JOIN code c ON u.roleCd = c.code AND c.codeGbn = 'ROLE' 
 		WHERE u.delDt is null
 		ORDER BY u.id desc
 	</select>
 	
-	<!-- <update id="update">
-  		UPDATE user SET password=#{password}, email=#{email} WHERE id=#{id}
-    </update> -->
+	
 	
 	
 	<!-- USER -->
@@ -22,7 +20,10 @@
 	</select>
 	
 	<select id="findByEmail" resultType="com.example.shop.model.User">
-		SELECT * FROM user WHERE email = #{email} AND delDt is null
+		SELECT u.*, c.codeNm as 'roleNm'
+		FROM user u
+		INNER JOIN code c ON u.roleCd = c.code AND c.codeGbn = 'ROLE'
+		WHERE email = #{email} AND delDt is null
 	</select>
 
 	<insert id="save">
@@ -31,5 +32,9 @@
 	
 	<update id="updateAuth">
   		UPDATE user SET authFg='Y' WHERE email=#{email}
+    </update>
+    
+    <update id="update">
+  		UPDATE user SET password=#{password}, addr=#{addr}, phone=#{phone} WHERE id=#{id}
     </update>
 </mapper>

@@ -21,5 +21,12 @@ public class Product {
 	private int delId;
 	private Timestamp delDt;
 	
+	private double ratingAvg;
+	private int saleId;
+	private int amount;
+	private String unitCd;
+	private String startDate;
+	private String endDate;
+	private int salePrice;
 	private String categoryNm;
 }

@@ -70,6 +70,7 @@ public class BoardCtr {
 		Board board = boardSvc.boardView(id);
 		
 		model.addAttribute("board", board);
+		model.addAttribute("type", "board");
 		
 		return "/admin/boardView";
 	}

@@ -28,8 +28,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().disable();
 		
 		http.authorizeRequests()
-		.antMatchers("/admin/**").authenticated()//.access("hasRole('ROLE_ADMIN')")
-//		.antMatchers("/**").permitAll()
+		//.antMatchers("/admin/**").authenticated()
+		.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+		.antMatchers("/user/info/**").authenticated()
+		.antMatchers("/comment/write").authenticated()
+		.antMatchers("/comment/delete").authenticated()
+		.antMatchers("/cart/**").authenticated()
+		.antMatchers("/order/**").authenticated()
 		.anyRequest().permitAll()
 		.and()
 		.formLogin()
@@ -37,10 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.loginPage("/user/loginForm")
 		.loginProcessingUrl("/user/loginProcess")
 		.defaultSuccessUrl("/");
-		
-//		.antMatchers("/**").authenticated()
-//		.anyRequest().permitAll();
-		//.and().authorizeRequests().antMatchers("/secure/**").authenticated().anyRequest().hasAnyRole("ADMIN")
 	}
 
 	@Autowired

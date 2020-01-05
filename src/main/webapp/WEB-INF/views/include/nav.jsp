@@ -18,6 +18,8 @@
 <link href="/bootstrap/board/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <!-- shop-homapage CSS. Custom styles for this template -->
 <link href="/bootstrap/board/css/shop-homepage.css" rel="stylesheet">
+<!-- star barrating -->
+<link href="/js/star_barrating/themes/css-stars.css" rel="stylesheet">
 
 </head>
 <body style="background-color:white">
@@ -44,9 +46,9 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    PRODUCT
+                    	PRODUCT
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="productMenu">
                     	<!-- ajax처리. side.jsp 참고-->
                         <a class="dropdown-item" href="#">1</a>
                         <a class="dropdown-item" href="#">1</a>
@@ -55,17 +57,21 @@
                         <a class="dropdown-item" href="#">1</a>
                     </div>
                 </li>
+                
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    BOARD
+                    	BOARD
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="boardMenu">
                         <a class="dropdown-item" href="#">Notice</a>
                         <a class="dropdown-item" href="#">QnA</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contact">Contact</a>
+                    <a class="nav-link" href="/sale/list" style="color:red; font-weight:bold;">SALE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">CONTACT</a>
                 </li>
                 
 
@@ -84,9 +90,19 @@
             	<c:otherwise>
             	<li class="nav-item"><a class="nav-link" href="/cart/list">
                 <i class="fa fa-shopping-cart fa-1x" aria-hidden="true"></i>&nbsp;
-                <span class="badge badge-light">88</span>
+                <span class="badge badge-light" id="cartCount"></span>
                 </a></li>
-            	<li class="nav-item"><a class="nav-link" href="#"><span id="loginUser">${principal.user.email}</span> 안녕하세요</a></li>
+                
+                <a class="nav-link dropdown-toggle" href="#" id="mypage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:#1A8DFF;">
+       			<b><span id="loginUser">${principal.user.email}</span></b>님 안녕하세요
+     			</a>
+     			<div class="dropdown-menu" aria-labelledby="mypage">
+      				<a class="dropdown-item" href="/user/info/updateForm">정보수정</a>
+      				<a class="dropdown-item" href="/order/list">주문목록</a>
+     			</div>
+                
+                
+            	<!-- <li class="nav-item"><a class="nav-link" href="/user/info/updateForm"></a></li> -->
             	<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
             	
             	</c:otherwise>
@@ -99,12 +115,44 @@
 <br>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script>
+	
+	$(document).ready(function(){
+		$.ajax({
+			async:false,
+			url:"/cart/count",
+			success:function(data){
+				$("#cartCount").html("");
+				$("#cartCount").html(data);
+			}
+		})
+	});
+
 	$(document).ready(function(){
 		var userEmail = $("#loginUser").text();
 		var username = userEmail.split('@')[0];
 		/* alert(username); */
 		$('#loginUser').html("");
 		$('#loginUser').append(username);
-	});
 		
+		makeMenu("product");
+		makeMenu("board");
+	});
+
+	function makeMenu(menu){
+		menuHtml = ``;
+		menuData = codeRequestData(menu.toUpperCase());
+
+		$.each(menuData, function(index, item){
+			console.log(menuData[index]);
+			var splitMenu = menuData[index].split(':');
+
+			if(menu == "product"){
+				menuHtml += `<a class="dropdown-item" href="/product/list/` + splitMenu[0] + `">` + splitMenu[1] + `</a>`;
+			} else if(menu == "board"){
+				menuHtml += `<a class="dropdown-item" href="/board/list/` + splitMenu[0] + `">` + splitMenu[1] + `</a>`;
+			}
+		});
+
+		$("#" + menu + "Menu").html(menuHtml);
+	}
 </script>

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.shop.model.Code;
@@ -18,23 +17,22 @@ import com.example.shop.security.UserDetail;
 import com.example.shop.service.admin.CodeSvc;
 
 @Controller
-@RequestMapping("/admin/code")
 public class CodeCtr {
 	
 	@Autowired
 	private CodeSvc codeSvc;
 	
-	@GetMapping("")
+	@GetMapping("/admin/code")
 	public String codePathRedirect() {
 		return "redirect:/admin/code/";
 	}
 	
-	@GetMapping("/")
+	@GetMapping("/admin/code/")
 	public String code() {
 		return "/admin/code";
 	}
 	
-	@GetMapping("/list")
+	@GetMapping("/admin/code/list")
 	public @ResponseBody Map<String, Object> codeList() {
 		List<Code> codeList = codeSvc.codeList();
 		
@@ -44,7 +42,7 @@ public class CodeCtr {
 		return map;
 	}
 	
-	@PostMapping("/insert")
+	@PostMapping("/admin/code/insert")
 	public @ResponseBody Map<String, Object> codeInsert(@AuthenticationPrincipal UserDetail userDetail, Code code) {
 		code.setInsId(userDetail.getUser().getId());
 		code.setUpdId(userDetail.getUser().getId());
@@ -57,7 +55,7 @@ public class CodeCtr {
 		return map;
 	}
 	
-	@PostMapping("/update")
+	@PostMapping("/admin/code/update")
 	public @ResponseBody Map<String, Object> codeUpdate(@AuthenticationPrincipal UserDetail userDetail, Code code) {
 		code.setUpdId(userDetail.getUser().getId());
 		String result = codeSvc.codeUpdate(code);
@@ -68,7 +66,7 @@ public class CodeCtr {
 		return map;
 	}
 	
-	@GetMapping("/{codeGbn}")
+	@GetMapping("/code/{codeGbn}")
 	public @ResponseBody List<Code> codeRequest(@PathVariable String codeGbn) {
 		List<Code> codeList = codeSvc.codeRequest(codeGbn);
 		

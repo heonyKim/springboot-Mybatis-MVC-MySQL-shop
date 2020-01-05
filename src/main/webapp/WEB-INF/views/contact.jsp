@@ -29,21 +29,21 @@
  			<div class="media contact-info">
             <span class="contact-info__icon"><i class="ti-home"></i></span>
             <div class="media-body">
-              <h3>Buttonwood, California.</h3>
-              <p>Rosemead, CA 91770</p>
+              <h3>부산IT교육센터</h3>
+              <p>부산광역시 부산진구 부전2동 중앙대로 708 4층, 5층</p>
             </div>
           </div>
           <div class="media contact-info">
             <span class="contact-info__icon"><i class="ti-tablet"></i></span>
             <div class="media-body">
-              <h3>00 (440) 9865 562</h3>
+              <h3>051-753-5600</h3>
               <p>Mon to Fri 9am to 6pm</p>
             </div>
           </div>
           <div class="media contact-info">
             <span class="contact-info__icon"><i class="ti-email"></i></span>
             <div class="media-body">
-              <h3>support@colorlib.com</h3>
+              <h4>admin@busanitshop.com</h4>
               <p>Send us your query anytime!</p>
             </div>
           </div>

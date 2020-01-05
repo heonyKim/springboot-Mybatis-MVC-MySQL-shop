@@ -112,8 +112,6 @@ function codeUpdate(){
 			if(data.result === "success"){
 				$("#codeTable").DataTable().ajax.reload();
 				alert("정상적으로 수정되었습니다.");
-			} else if(data.result === "duplicate"){
-				alert("이미 해당 코드로 입력된 자료가 있습니다.\n확인 후 다시 시도해 주세요.");
 			} else {
 				alert("데이터 수정 중 오류가 발생하였습니다.\n입력한 정보를 다시 확인해 주세요.");
 			}

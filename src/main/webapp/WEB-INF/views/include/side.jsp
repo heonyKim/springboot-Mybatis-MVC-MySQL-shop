@@ -23,7 +23,7 @@
 							);
 						}
 					}
-				})	
+				})\	
 			});
 	</script>
 	<div class="navbar navbar-expand-sm justify-content-center" id="navBarCategory">

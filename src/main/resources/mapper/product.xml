@@ -23,18 +23,38 @@
 	</update>
 	
 	<!-- USER -->
-	<select id="findAll" resultType="com.example.shop.model.Product">
-		SELECT * FROM product ORDER BY id DESC
-	</select>
 	
+	<select id="findAll" resultType="com.example.shop.model.Product">
+		SELECT p.*,(select avg(rating) from comment cm where p.id=cm.productId and delId is null group by productId) as ratingAvg, 
+		c.codeNm categoryNm,s.id saleId,s.amount,s.unitCd,s.startDate,s.endDate FROM product p 
+		LEFT OUTER JOIN sale s ON p.id=s.productId and endDate>=#{today} 
+		JOIN code c ON c.codeGbn='PRODUCT' and c.code=p.categoryCd 
+		WHERE delId is null ORDER BY id DESC
+	</select>
 	
 	<select id="productBest3" resultType="com.example.shop.model.Product">
-		SELECT p.id,p.productNm,p.price,p.categoryCd,p.filePath,p.description, count(*) 
-		FROM product p JOIN orderInfo o ON p.id=o.productId WHERE p.delId is null AND p.delDt is null 
-		GROUP BY p.productNm,p.id ORDER BY count(*) DESC LIMIT 3
+		SELECT p.*,(select avg(rating) from comment cm where p.id=cm.productId and delId is null group by productId) as ratingAvg, 
+		s.id saleId,s.amount,s.unitCd,s.startDate,s.endDate,count(*) FROM product p 
+		LEFT OUTER JOIN sale s ON p.id=s.productId and endDate>=#{today} 
+        JOIN orderInfo o ON p.id=o.productId 
+		WHERE delId is null 
+        GROUP BY p.productNm,p.id ORDER BY count(*) DESC LIMIT 3
 	</select>
 	
+	<select id="productCategoryList" resultType="com.example.shop.model.Product">
+	SELECT p.*,(select avg(rating) from comment cm where p.id=cm.productId and delId is null group by productId) as ratingAvg, 
+		c.codeNm categoryNm,s.id saleId,s.amount,s.unitCd,s.startDate,s.endDate FROM product p 
+		LEFT OUTER JOIN sale s ON p.id=s.productId and endDate>=#{today}
+		JOIN code c ON c.codeGbn='PRODUCT' and c.code=p.categoryCd 
+		WHERE delId is null and categoryCd=#{cd} ORDER BY id DESC
+	</select>
+	
+	
 	<select id="productView" resultType="com.example.shop.model.Product">
-		SELECT p.*, c.codeNm as 'categoryNm' FROM product p INNER JOIN code c ON c.codeGbn='PRODUCT' AND c.code=p.categoryCd WHERE p.id = #{id};
+		SELECT p.*,(select avg(rating) from comment cm where p.id=cm.productId and delId is null group by productId) as ratingAvg, 
+		c.codeNm categoryNm,s.id saleId,s.amount,s.unitCd,s.startDate,s.endDate FROM product p 
+		LEFT OUTER JOIN sale s ON p.id=s.productId and endDate>=#{today} 
+		JOIN code c ON c.codeGbn='PRODUCT' and c.code=p.categoryCd 
+		WHERE p.id=#{id} ORDER BY id DESC
 	</select>
 </mapper>

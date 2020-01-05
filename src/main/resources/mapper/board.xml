@@ -31,5 +31,12 @@
   	</update>
 
   	<!-- USER -->
-
+	<select id="findAlluser" resultType="com.example.shop.model.Board">
+		SELECT b.id,b.title,u.email,b.insDt FROM board b JOIN user u ON b.insId=u.id WHERE b.delid is null and b.delDt is null and b.categoryCd=#{categoryCd} ORDER BY id DESC
+	</select>
+	
+	<select id="boardCount" resultType="int">
+		select count(*) from board where categoryCd = #{categoryCd}
+	</select>
+	
 </mapper>
