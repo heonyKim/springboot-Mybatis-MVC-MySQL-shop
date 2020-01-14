@@ -17,11 +17,6 @@
 					
 					<!-- Container Fluid-->
 					<div class="container-fluid" id="container-wrapper">
-						<div
-							class="d-sm-flex align-items-center justify-content-between mb-4">
-							<h1 class="h3 mb-0 text-gray-800">Main</h1>
-						</div>
-	
 						<div class="row mb-3">
 							<div class="col-xl-3 col-md-6 mb-4">
 								<div class="card">
@@ -43,8 +38,8 @@
 									<div class="card-body">
 										<div class="row no-gutters align-items-center">
 											<div class="col mr-2">
-												<div class="text-xs font-weight-bold text-uppercase mb-1">주문확인 대기건</div>
-												<div class="h5 mb-0 font-weight-bold text-gray-800" id="orderCheckCnt"></div>
+												<div class="text-xs font-weight-bold text-uppercase mb-1">입금확인 대기건</div>
+												<div class="h5 mb-0 font-weight-bold text-gray-800" id="accountCheckCnt"></div>
 											</div>
 											<div class="col-auto">
 												<a href="/admin/order"><i class="fas fa-comments fa-2x text-warning"></i></a>
@@ -58,8 +53,8 @@
 									<div class="card-body">
 										<div class="row no-gutters align-items-center">
 											<div class="col mr-2">
-												<div class="text-xs font-weight-bold text-uppercase mb-1">오늘의 판매건수</div>
-												<div class="h5 mb-0 font-weight-bold text-gray-800" id="sellCnt"></div>
+												<div class="text-xs font-weight-bold text-uppercase mb-1">상품준비 대기건</div>
+												<div class="h5 mb-0 font-weight-bold text-gray-800" id="orderCheckCnt"></div>
 											</div>
 											<div class="col-auto">
 												<a href="/admin/order"><i class="fas fa-shopping-cart fa-2x text-success"></i></a>
@@ -126,8 +121,8 @@
 		<script>
 			$(document).ready(function() {
 				newUserCnt();
+				accountCheckCnt();
 				orderCheckCnt();
-				sellCnt();
 				sellAmountSum();
 				dailySellAmount();
 				sellAmountPercentOfCategory();

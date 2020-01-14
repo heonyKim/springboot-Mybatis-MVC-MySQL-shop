@@ -8,8 +8,7 @@ import com.example.shop.model.Sale;
 public interface SaleRepository {
 	//ADMIN
 	List<Sale> findAll();
-	List<Product> findByProduct(String categoryCd);
-	//List<Code> findBycodeGbn();
+	List<Product> findByProduct(String categoryCd,String today);
 	int save(Sale sale);
 	int update(Sale sale);
 	

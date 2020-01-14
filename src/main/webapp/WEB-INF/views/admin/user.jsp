@@ -5,9 +5,6 @@
 		<%@include file="/WEB-INF/views/admin/include/header.jsp" %>
 		<!-- Page level plugins -->
 		<link href="/bootstrap/admin/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-		<!-- excel,pdf,copy -->
-		<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/dataTables.bootstrap4.min.css"/>
-		<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/buttons/1.3.1/css/buttons.bootstrap4.min.css"/>
 	</head>
 
 	<body id="page-top">
@@ -29,19 +26,29 @@
 						<!-- Row -->
 						<div class="row">
 							<div class="col-lg-12">
+							
+								<div class="card mb-4">
+									<div class="card-header py-3">
+										<h6 class="m-0 font-weight-bold text-primary">삭제대상</h6>
+										<div>
+											 - 7일 이상된 탈퇴 회원 정보 : <span id="delUserCnt" style="color:red; font-weight:bold;"></span>건 &nbsp; &nbsp;
+											<button type="button" id="btnDel" class="btn btn-danger mb-1">삭제</button>
+										</div>
+									</div>
+								</div>
+									
 								<div class="card mb-4">
 									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 										<h6 class="m-0 font-weight-bold text-primary">목록</h6>
 									</div>
 									<div class="table-responsive p-3">
-										<table class="ui celled table" id="userTable">
+										<table class="ui table" style="width:100%;" id="userTable">
 											<thead class="thead-light">
 												<tr>
 													<th>이메일</th>
 													<th>주소</th>
 													<th>연락처</th>
-													<th>회원등급</th>
-													<th>인증여부</th>
+													<th>메일인증</th>
 													<th>가입일시</th>
 												</tr>
 											</thead>
@@ -78,6 +85,7 @@
 		<!-- Page level custom scripts -->
 		<script>
 			$(document).ready(function() {
+				checkUserCnt();
 				userList();
 			});
 		</script>

@@ -21,5 +21,4 @@ public class Board {
 	
 	private int rowNum;
 	private String email;
-	private String insDtToString;
 }

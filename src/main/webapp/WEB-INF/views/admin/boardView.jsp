@@ -118,9 +118,8 @@
 			});
 		
 			$("#btnCancel").on("click", function(){
-				//var categoryCd = $("#categoryCd").val();
-				//location.href="/admin/board/list/" + categoryCd;
-				location.href="/admin/board/list";
+				var categoryCd = $("#categoryCd").val();
+				location.href="/admin/board/list?category=" + categoryCd;
 			});
 		</script>
 	</body>

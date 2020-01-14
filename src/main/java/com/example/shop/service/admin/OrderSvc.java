@@ -45,6 +45,7 @@ public class OrderSvc {
 		Map<String, String> hash = new HashMap<String, String>();
 		hash.put("orderNo", orderView.get(0).getOrderNo());
 		hash.put("productList", productList);
+		hash.put("recipient", orderView.get(0).getRecipient());
 		hash.put("addr", orderView.get(0).getAddr());
 		hash.put("phone", orderView.get(0).getPhone());
 		hash.put("discountAmt", sumOfdiscountAmt+"");

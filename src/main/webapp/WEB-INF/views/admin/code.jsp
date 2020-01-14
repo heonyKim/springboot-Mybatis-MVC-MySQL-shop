@@ -34,17 +34,17 @@
 										<form id="codeForm">
 											<div class="form-group">
 												<label for="codeNm">코드명</label>
-												<input class="form-control  mb-3" type="text" id="codeNm" name="codeNm" placeholder="Code Name">
+												<input class="form-control  mb-3" type="text" id="codeNm" name="codeNm" placeholder="코드명   ex)상의, 하의, ...">
 											</div>
 	
 											<div class="form-group">
 												<label for="codeGbn">코드구분</label>
-												<input class="form-control  mb-3" type="text" id="codeGbn" name="codeGbn" placeholder="Code Category">
+												<input class="form-control  mb-3" type="text" id="codeGbn" name="codeGbn" placeholder="코드구분(영어대문자만 가능)   ex)BOARD, CATEGORY, ...">
 											</div>
 	
 											<div class="form-group">
 												<label for="code">코드</label>
-												<input class="form-control  mb-3" type="text" id="code" name="code" placeholder="Code">
+												<input class="form-control  mb-3" type="number" id="code" name="code" placeholder="코드(숫자, 2글자)   ex)01, 02, ...">
 											</div>
 	
 											<div class="form-group">

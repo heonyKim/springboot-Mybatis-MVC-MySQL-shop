@@ -47,4 +47,49 @@ public class Util {
 		
 		return dateList;
 	}
+	
+	public static String replaceTag(String content) {
+		content = content
+				.replaceAll("&#", "")
+				.replaceAll("&", "&amp;")
+				.replaceAll("<", "&lt;")
+				.replaceAll(">", "&gt;")
+				.replaceAll("\"", "&quot;")
+				.replaceAll("\'", "&#x27;")
+				.replaceAll("/", "&#x2F;")
+				.replaceAll("eval\\((.*)\\)", "")
+				.replaceAll("[\\\"\\'][\\s]*javascript:(.*)[\\\"\\']", "\"\"")
+				.replaceAll("[\\\"\\'][\\s]*vbscript:(.*)[\\\"\\']", "\"\"")
+				.replaceAll("document.cookie", "&#100;&#111;&#99;&#117;&#109;&#101;&#110;&#116;&#46;&#99;&#111;&#111;&#107;&#105;&#101;")
+				.replaceAll("<script", "")
+				.replaceAll("script>", "")
+				.replaceAll("<iframe", "")
+				.replaceAll("<object", "")
+				.replaceAll("<embed", "")
+				.replaceAll("onload", "no_onload")
+				.replaceAll("expression", "no_expression")
+				.replaceAll("onmouseover", "no_onmouseover")
+				.replaceAll("onmouseout", "no_onmouseout")
+				.replaceAll("onclick", "no_onclick");
+		
+		return content; 
+	}
+	
+	public static String replacePhone(String phone) {
+		int length = phone.length();
+		
+		if(length == 11) {
+			String phone1 = phone.substring(0, 3);
+			String phone2 = phone.substring(3, 7);
+			String phone3 = phone.substring(7);
+			phone = phone1 + "-" + phone2 + "-" + phone3;
+		} else if(length == 10) {
+			String phone1 = phone.substring(0, 3);
+			String phone2 = phone.substring(3, 6);
+			String phone3 = phone.substring(6);
+			phone = phone1 + "-" + phone2 + "-" + phone3;
+		}
+		
+		return phone;
+	}
 }

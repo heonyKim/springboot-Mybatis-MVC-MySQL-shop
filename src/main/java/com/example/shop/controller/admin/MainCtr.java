@@ -41,22 +41,22 @@ public class MainCtr {
 		return map;
 	}
 	
-	@GetMapping("/orderCheckCnt")
-	public @ResponseBody Map<String, Object> mainOrderCheckCnt() {
+	@GetMapping("/accountCheckCnt")
+	public @ResponseBody Map<String, Object> mainAccountCheckCnt() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		int cnt = mainSvc.orderCheckCnt(Util.getToday());
+		int cnt = mainSvc.accountCheckCnt(Util.getToday());
 		
 		map.put("cnt", cnt);
 		
 		return map;
 	}
 	
-	@GetMapping("/sellCnt")
-	public @ResponseBody Map<String, Object> mainSellCnt() {
+	@GetMapping("/orderCheckCnt")
+	public @ResponseBody Map<String, Object> mainOrderCheckCnt() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		int cnt = mainSvc.sellCnt(Util.getToday());
+		int cnt = mainSvc.orderCheckCnt(Util.getToday());
 		
 		map.put("cnt", cnt);
 		

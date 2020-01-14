@@ -1,9 +1,25 @@
+$("#btnDel").click(function() {
+	userDelete();
+});
+
+function checkUserCnt(){
+	$.ajax({
+		url: "/admin/user/check",
+		type: "get", 
+		dataType: "json",
+		success: function(data){
+			$("#delUserCnt").text(data.data);
+		},
+		error: function(request, status, error){
+			console.log("code:" + request.status);
+			console.log("message:" + request.responseText);
+			console.log("error:" + error);
+		}
+	});
+}
+
 function userList(){
 	$("#userTable").DataTable({
-		/* excel,pdf,copy */
-		dom: "Blfrtip",
-		buttons: [ "excel", "pdf", "copy" ],
-		/* excel,pdf,copy */
 		processing: true,
 		serverSide: false,
 		paging: true,
@@ -30,11 +46,42 @@ function userList(){
 			{"data": "email"},
 			{"data": "addr"},
 			{"data": "phone"},
-			{"data": "roleNm"},
 			{"data": "authFg"},
-			{data: "insDt",
-					render: function(data, type, row){return getDateFormat(data);}
+			{"data": "insDt",
+				render: function(data, type, row){return getDateFormat(data);}
 			}
+		],
+		columnDefs: [
+			{"targets":[0], "width": "20%"},
+			{"targets":[1], "width": "40%"},
+			{"targets":[2], "width": "15%"},
+			{"targets":[3], "width": "10%"},
+			{"targets":[4], "width": "15%"},
 		]
 	});
+}
+
+function userDelete(){
+	if(confirm("7일 이상된 탈퇴한 회원정보를 삭제하시겠습니까?")){
+		$.ajax({
+			url: "/admin/user/delete",
+			type: "post", 
+			dataType: "json",
+			success: function(data){
+				if(data.data === "success"){
+					alert("7일 이상된 탈퇴 회원 정보가 정상적으로 삭제되었습니다.");
+				} else {
+					alert("정보 삭제 중 오류가 발생하였습니다.\n다시 시도해 주세요.");
+				}
+			},
+			error: function(request, status, error){
+				console.log("code:" + request.status);
+				console.log("message:" + request.responseText);
+				console.log("error:" + error);
+				alert("정보 삭제 중 오류가 발생하였습니다.\n다시 시도해 주세요.");
+			}
+		});
+		
+		location.reload();
+	}
 }

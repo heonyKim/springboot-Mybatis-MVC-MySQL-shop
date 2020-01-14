@@ -2,26 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.shop.repository.MainRepository">
 	
+	<!-- ADMIN -->
 	<select id="newUserCnt" resultType="Integer">
 		SELECT count(*) FROM user WHERE DATE(insDt) = DATE(#{date})
 	</select>
 	
-	<select id="orderCheckCnt" resultType="Integer">
-		SELECT count(*) FROM orderInfo WHERE deliveryCd = '01' AND DATE(orderDt) = DATE(#{date})
+	<select id="accountCheckCnt" resultType="Integer">
+		SELECT count(distinct o.orderNo)
+		FROM orderInfo o
+		INNER JOIN user u on o.insId = u.id
+		WHERE deliveryCd = '01' AND paymentCd in ('01', '02')
 	</select>
 	
-	<select id="sellCnt" resultType="Integer">
-		SELECT count(distinct orderNo) FROM orderInfo WHERE DATE(orderDt) = DATE(#{date}) 
+	<select id="orderCheckCnt" resultType="Integer">
+		SELECT count(distinct o.orderNo)
+		FROM orderInfo o
+		INNER JOIN user u on o.insId = u.id
+		WHERE deliveryCd = '02' AND paymentCd in ('01', '02')
 	</select>
 	
 	<select id="sellAmountSum" resultType="Integer">
-		SELECT ifnull(sum(amount), 0) FROM orderInfo WHERE DATE(orderDt) = DATE(#{date})
+		SELECT ifnull(sum(amount), 0)
+		FROM orderInfo o
+		WHERE DATE(orderDt) = DATE(#{date}) AND paymentCd in ('01', '02')
 	</select>
 	
 	<select id="dailySellAmount" resultType="hashmap">
 		SELECT DATE(orderDt) as 'orderDate', sum(amount) as 'amount'
-		FROM orderInfo
-		WHERE DATE(orderDt) BETWEEN DATE(#{beforeDate}) AND DATE(#{date})
+		FROM orderInfo o
+		WHERE DATE(orderDt) BETWEEN DATE(#{beforeDate}) AND DATE(#{date}) AND paymentCd in ('01', '02')
 		GROUP BY DATE(orderDt)
 	</select>
 	
@@ -30,7 +39,7 @@
 		FROM orderInfo o
 		INNER JOIN product p ON o.productId = p.id
 		INNER JOIN code c ON p.categoryCd = c.code AND c.codeGbn = 'PRODUCT'
-		WHERE DATE(orderDt) BETWEEN DATE(#{beforeDate}) AND DATE(#{date})
+		WHERE DATE(orderDt) BETWEEN DATE(#{beforeDate}) AND DATE(#{date}) AND paymentCd in ('01', '02')
 		GROUP BY c.codeNm
 		ORDER BY amount desc
 		LIMIT 6;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.shop.repository.SaleRepository">
+
 	<!-- ADMIN -->
 	<select id="findAll" resultType="com.example.shop.model.Sale">
 		SELECT s.*, p.productNm, p.categoryCd, p.price, c.codeNm as 'unitNm'
@@ -11,7 +12,10 @@
 	</select>
 	
 	<select id="findByProduct" resultType="com.example.shop.model.Product">
-		SELECT * FROM product WHERE categoryCd=#{categoryCd}
+		SELECT * FROM product 
+		WHERE id NOT IN (SELECT productId FROM sale WHERE endDate>=#{today}) 
+		AND categoryCd=#{categoryCd}
+		AND delDt is null
 	</select>
 	
 	<select id="findBycodeGbn" resultType="com.example.shop.model.Code">
@@ -31,10 +35,14 @@
     
     <!-- USER -->
 	<select id="saleList" resultType="com.example.shop.model.Product">
-		SELECT p.*,(select avg(rating) from comment cm where p.id=cm.productId and delId is null group by productId) as ratingAvg, 
-		s.id saleId,s.amount,s.unitCd,s.startDate,s.endDate FROM product p 
-		LEFT OUTER JOIN sale s ON p.id=s.productId and endDate>=#{today}
-		WHERE delId is null and s.id is not null 
+		SELECT p.*, (SELECT avg(rating)
+						 FROM comment cm
+						 WHERE p.id=cm.productId AND delId is null
+						 GROUP BY productId) as ratingAvg
+				, s.id saleId, s.amount, s.unitCd, s.startDate, s.endDate
+		FROM product p 
+		LEFT OUTER JOIN sale s ON p.id=s.productId AND endDate>=#{today}
+		WHERE delId is null AND s.id is not null 
         ORDER BY id DESC
 	</select>
 </mapper>

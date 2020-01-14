@@ -6,7 +6,7 @@
 		<title>Shopping Admin</title>
 		<link href="/bootstrap/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 		<link href="/bootstrap/admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-		<link href="/bootstrap/admin/css/ruang-admin.min.css" rel="stylesheet">
+		<link href="/bootstrap/admin/css/ruang-admin.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet">
 		<link href="https://cdn.datatables.net/1.10.20/css/dataTables.semanticui.min.css" rel="stylesheet">
 		

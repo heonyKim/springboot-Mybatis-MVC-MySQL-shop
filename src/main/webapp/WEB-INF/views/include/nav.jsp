@@ -21,6 +21,9 @@
 <!-- star barrating -->
 <link href="/js/star_barrating/themes/css-stars.css" rel="stylesheet">
 
+<!-- Datatables UI styling -->
+
+
 </head>
 <body style="background-color:white">
 
@@ -44,37 +47,31 @@
    
         <div class="collapse navbar-collapse" id="links">
             <ul class="navbar-nav mr-auto">
+            	<li class="nav-item">
+                    <a class="nav-link" href="/contact">CONTACT</a>
+                </li>
+           		<li class="nav-item">
+                    <a class="nav-link" href="/sale/list">SALE</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     	PRODUCT
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="productMenu">
-                    	<!-- ajax처리. side.jsp 참고-->
-                        <a class="dropdown-item" href="#">1</a>
-                        <a class="dropdown-item" href="#">1</a>
-                        <a class="dropdown-item" href="#">1</a>
-                        <a class="dropdown-item" href="#">1</a>
-                        <a class="dropdown-item" href="#">1</a>
-                    </div>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="productMenu"></div>
                 </li>
                 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     	BOARD
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="boardMenu">
-                        <a class="dropdown-item" href="#">Notice</a>
-                        <a class="dropdown-item" href="#">QnA</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/sale/list" style="color:red; font-weight:bold;">SALE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/contact">CONTACT</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" id="boardMenu"></div>
                 </li>
                 
-
+                <c:if test="${principal.user.roleCd eq 99}">
+                <li class="nav-item">
+					<a class="nav-link" href="/admin/main" style="color:#007bff;">ADMIN</a>
+				</li>
+				</c:if>
             </ul>
         </div>
         
@@ -83,28 +80,32 @@
             <ul class="navbar-nav ml-auto">
             <c:choose>
             	<c:when test="${principal.user eq null}">
-            		<li class="nav-item"><a class="nav-link" href="/user/joinForm">Join</a></li>
             	<li class="nav-item"><a class="nav-link" href="/user/loginForm">Login</a></li>
+            	<li class="nav-item"><a class="nav-link" href="/user/joinForm">Join</a></li>
             	</c:when>
             	
             	<c:otherwise>
-            	<li class="nav-item"><a class="nav-link" href="/cart/list">
-                <i class="fa fa-shopping-cart fa-1x" aria-hidden="true"></i>&nbsp;
-                <span class="badge badge-light" id="cartCount"></span>
-                </a></li>
-                
+            	
+                <li class="dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="mypage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:#1A8DFF;">
        			<b><span id="loginUser">${principal.user.email}</span></b>님 안녕하세요
      			</a>
+     			
      			<div class="dropdown-menu" aria-labelledby="mypage">
-      				<a class="dropdown-item" href="/user/info/updateForm">정보수정</a>
+      				<a class="dropdown-item" href="/user/info/updateForm">회원정보수정</a>
       				<a class="dropdown-item" href="/order/list">주문목록</a>
+      				<a class="dropdown-item" href="/logout">Logout</a>
      			</div>
+     			</li>
+     			
+     			<li class="nav-item">
+     			<a class="nav-link" href="/cart/list">
+                <i class="fa fa-shopping-cart" style="font-size:25px;" aria-hidden="true"></i>&nbsp;
+                <span class="badge badge-light" id="cartCount" style="background-color: white; font-size:15px;"></span>
+                </a></li>
                 
+     			
                 
-            	<!-- <li class="nav-item"><a class="nav-link" href="/user/info/updateForm"></a></li> -->
-            	<li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
-            	
             	</c:otherwise>
             </c:choose>
   
@@ -143,13 +144,14 @@
 		menuData = codeRequestData(menu.toUpperCase());
 
 		$.each(menuData, function(index, item){
-			console.log(menuData[index]);
 			var splitMenu = menuData[index].split(':');
 
 			if(menu == "product"){
 				menuHtml += `<a class="dropdown-item" href="/product/list/` + splitMenu[0] + `">` + splitMenu[1] + `</a>`;
 			} else if(menu == "board"){
-				menuHtml += `<a class="dropdown-item" href="/board/list/` + splitMenu[0] + `">` + splitMenu[1] + `</a>`;
+				if(splitMenu[0] != 99){
+					menuHtml += `<a class="dropdown-item" href="/board/list?category=` + splitMenu[0] + `">` + splitMenu[1] + `</a>`;
+				}
 			}
 		});
 

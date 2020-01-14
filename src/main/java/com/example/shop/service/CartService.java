@@ -9,7 +9,7 @@ import com.example.shop.model.Cart;
 import com.example.shop.repository.CartRepository;
 
 @Service
-public class CartSvc {
+public class CartService {
 
 	@Autowired
 	private CartRepository cRepo;
@@ -35,5 +35,4 @@ public class CartSvc {
 	public int cartUpdate(Cart cart) {
 		return cRepo.update(cart);
 	}
-	
 }

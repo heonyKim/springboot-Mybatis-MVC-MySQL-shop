@@ -20,12 +20,12 @@ public class MainSvc {
 		return mainRep.newUserCnt(date);
 	}
 	
-	public int orderCheckCnt(String date){
-		return mainRep.orderCheckCnt(date);
+	public int accountCheckCnt(String date){
+		return mainRep.accountCheckCnt(date);
 	}
 	
-	public int sellCnt(String date){
-		return mainRep.sellCnt(date);
+	public int orderCheckCnt(String date){
+		return mainRep.orderCheckCnt(date);
 	}
 	
 	public int sellAmountSum(String date){

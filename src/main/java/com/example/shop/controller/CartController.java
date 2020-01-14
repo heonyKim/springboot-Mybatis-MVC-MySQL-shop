@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.shop.model.Cart;
-import com.example.shop.model.Coupon;
 import com.example.shop.security.UserDetail;
-import com.example.shop.service.CartSvc;
-import com.example.shop.service.admin.CouponSvc;
+import com.example.shop.service.CartService;
 import com.google.gson.Gson;
 
 @Controller
@@ -25,26 +23,25 @@ import com.google.gson.Gson;
 public class CartController {
 	
 	@Autowired
-	private CartSvc cartSvc;
-	
-	@Autowired
-	private CouponSvc couponSvc;
+	private CartService cartSvc;
 	
 	@RequestMapping("/count")
 	public @ResponseBody String cartCount(@AuthenticationPrincipal UserDetail user) {
 		int count = cartSvc.cartCount(user.getUser().getId());
+		
 		Gson gson = new Gson();
 		String countToJson=gson.toJson(count);
+		
 		return countToJson;
 	}
 	
 	@PostMapping("/add")
-	public String cartAdd(Cart cart, 
-			Model model,
-			@AuthenticationPrincipal UserDetail user) {
+	public String cartAdd(Cart cart, Model model, @AuthenticationPrincipal UserDetail user) {
 		int userId = user.getUser().getId();
 		cart.setInsId(userId);
+		
 		cartSvc.cartAdd(cart);
+		
 		return "redirect:/cart/list";
 	}
 	
@@ -55,13 +52,16 @@ public class CartController {
 	
 	@RequestMapping(value={"/cartList","/amountTotal"})
 	public @ResponseBody String addedCartList(@AuthenticationPrincipal UserDetail user) {
-		SimpleDateFormat format1 = new SimpleDateFormat ("yyyyMMdd");
-		String today = format1.format(System.currentTimeMillis());
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+		String today = format.format(System.currentTimeMillis());
 		
 		int userId = user.getUser().getId();
-		List<Cart> list =cartSvc.cartList(userId,today);
+		
+		List<Cart> list =cartSvc.cartList(userId, today);
+		
 		Gson gson = new Gson();
 		String listToJson=gson.toJson(list);
+		
 		return listToJson;
 	}
 	
@@ -71,19 +71,9 @@ public class CartController {
 		return result;
 	}
 	
-	
 	@RequestMapping("/delete")
 	public @ResponseBody int cartDelete(@RequestParam("id") int id) {
 		int result = cartSvc.cartDelete(id);
 		return result;
 	}
-	
-	@RequestMapping("/coupon")
-	public @ResponseBody String cartCoupon(@RequestParam("couponCode") String code) {
-		Coupon coupon = couponSvc.cartCoupon(code);
-		Gson gson = new Gson();
-		String couponToJson=gson.toJson(coupon);
-		return couponToJson;
-	}
-	
 }

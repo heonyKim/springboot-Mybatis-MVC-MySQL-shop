@@ -2,8 +2,6 @@ package com.example.shop.repository;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.example.shop.model.Board;
 
 public interface BoardRepository {

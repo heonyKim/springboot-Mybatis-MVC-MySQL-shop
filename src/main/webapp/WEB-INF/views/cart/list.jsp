@@ -70,192 +70,139 @@
     margin-top: 20px;
 }
 </style>
-<div class="container">
+<div class="container mb-5" style="margin-top: 75px;">
    <div class="card shopping-cart">
-            <div class="card-header bg-dark text-light">
-                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                Shipping cart
-                <a href="/" class="btn btn-outline-info btn-sm pull-right">쇼핑 계속하기</a>
-                <div class="clearfix"></div>
+      <div class="card-header bg-dark text-light">
+         <i class="fa fa-shopping-cart" aria-hidden="true"></i> &nbsp; 장바구니 목록
+      </div>
+      <div class="card-body" id="list-body"></div>
+      <div class="card-footer">
+         <div class="pull-right" style="margin: 10px">
+            <a href="/order" class="btn btn-success pull-right">주문하기</a>
+            <div class="pull-right" style="margin: 5px">
+               전체 금액: <b>0원</b>
             </div>
-            <div class="card-body" id="list-body">
-                    <!-- PRODUCT AREA-->
-            </div>
-            <div class="card-footer">
-                <div class="coupon col-md-5 col-sm-5 no-padding-left pull-left">
-                    <!-- <div class="row" id="couponRow">
-                        <div class="col-6">
-                            <input type="text" class="form-control" id="couponCode" placeholder="쿠폰코드">
-                        </div>
-                        <div class="col-6">
-                            <input type="button" class="btn btn-default" id="useCoupon" value="쿠폰사용">
-                        </div>
-                        <div class="col-12" id="couponArea">
-                        </div>
-                        
-                    </div> -->
-                    <br>
-                    
-                    
-                </div>
-                <div class="pull-right" style="margin: 10px">
-                    <a href="/order" class="btn btn-success pull-right">주문하기</a>
-                    <div class="pull-right" style="margin: 5px">
-                        Total price: <b>50.00€</b>
-                    </div>
-                </div>
-            </div>
-        </div>
+         </div>
+      </div>
+   </div>
 </div>
 
 <%@include file="/WEB-INF/views/include/footer.jsp" %>
 
 <script>
-	cartList();
-	function cartList(){
-		$.ajax({
-			async:false,
-			url:"/cart/cartList",
-			type:"get",
-			dataType:"json",
-			success:function(data){
-				$(".card-body").html();
-				var cartList="";
-				for(var datum of data){
-					cartList += "<div name='product"+datum.id+"'><div class='row'><input type='hidden' value='"+datum.id+"' class='cartId' name='id'>";
-					cartList += "<input type='hidden' value='"+datum.productId+"' id='productId' name='productId'>";
-					cartList += "<div class='col-12 col-sm-12 col-md-2 text-center'>";
-					cartList += "<img class='img-responsive' src='"+datum.filePath+"' alt='prewiew' max-width='120' height='80'><br></div>";
-					cartList += "<div class='col-12 col-sm-12 text-md-center col-md-6'><h6 class='product-name'><strong>";
-					cartList += "<a href='/product/"+datum.productId+"' style='color:black;'>"+datum.productNm+"</a></strong></h6>";
-					cartList += "</div><div class='col-12 col-sm-12 text-sm-center col-md-4 text-md-right row'>";
-					cartList += "<div class='col-5 col-sm-5 col-md-5 text-md-right' style='padding-top: 5px'><h6><strong>";
-					
-					if(datum.saleId>0){
-						var salePrice=0;
-						if(datum.unitCd=='01'){
-							salePrice = datum.price - datum.amount;
-						}else if(datum.unitCd='02'){
-							salePrice = datum.price*(1-(datum.amount/100));
-						}
-						cartList += "￦"+salePrice+"<input type='hidden' value="+salePrice+"' name='price' class='price'></strong></h6></div>";
-					}else{
-						cartList += "￦"+datum.price+"<input type='hidden' value="+datum.price+"' name='price' class='price'></strong></h6></div>"	;
-					}
-					cartList += "<div class='col-5 col-sm-5 col-md-5'><div class='quantity'><input type='number'step='1' max='99' min='1' class='cnt' name='cnt' value='"+datum.cnt+"' size='4'>";
-					cartList += "</div></div><div class='col-2 col-sm-2 col-md-2 text-right'>";
-					cartList += "<button type='button' name='delete' class='btn btn-outline-danger btn-xs'><i class='fa fa-trash' aria-hidden='true'></i>";
-					cartList += "</button> </div></div></div><hr></div>";
-					
-				}
-				/* cartList += "<div class='pull-right'><a href='' class='btn btn-outline-secondary pull-right'>"
-				cartList += "장바구니 수정 </a></div>" */
-				$("#list-body").html(cartList);
-				
-			}
-		});
-	}
-	amountTotal();
-	function amountTotal(){
-		$.ajax({
-			async:false,
-			url:"/cart/amountTotal",
-			type:"get",
-			dataType:"json",
-			success:function(data){
-				var totalPrice=0;
-				for(var datum of data){
-					if(datum.saleId>0){
-						var price=0;
-						if(datum.unitCd=='01'){
-							price = (datum.price - datum.amount)*datum.cnt;
-						}else if(datum.unitCd='02'){
-							price = (datum.price*(1-(datum.amount/100)))*datum.cnt;
-						}
-					}else{
-						price = datum.price*datum.cnt;
-					}
-					totalPrice+=price;
-				}
-				$(".pull-right>b").html("");
-				$(".pull-right>b").html("￦"+numberWithCommas(totalPrice));
-			}
-		});
-	}
-	
-	$('button[name=delete]').click(function() {
-		var n = $('button[name=delete]').index(this);
-		var listId = $(".cartId:eq(" + n + ")").val();
-		var id = 'id=' + $(".cartId:eq(" + n + ")").val();
-		$.ajax({
-			async:false,
-			url : "/cart/delete",
-			type : "post",
-			data : id,
-			dataType : "json",
-			success : function(data) {
-				$('div[name=product' + listId + ']').remove();
-				amountTotal();
-			}
-		});
-	});
-	
-	$(".cnt").change(function(){
-		var n = $('input[name=cnt]').index(this);
-		var cnt = $(".cnt:eq(" + n + ")").val();
-		var id = $(".cartId:eq(" + n + ")").val();
-		var dataList={"cnt":cnt,"id":id};
-		$.ajax({
-			async:false,
-			url : "/cart/update",
-			type : "post",
-			data : dataList,
-			dataType : "json",
-			success : function(data) {
-				amountTotal();
-			}
-		});
-	});
-	
-	
-	/* $("#useCoupon").click(function(){
-	var couponCode="couponCode="+$("#couponCode").val();
-	console.log(couponCode);
-	$.ajax({
-		async:false,
-		url:"/cart/coupon",
-		type:"post",
-		data:couponCode,
-		dataType:"json",
-		success:function(data){
-			if(data===null){
-				alert("쿠폰정보가 없습니다.");	
-			}else{
-				var today = new Date();
-				today = Number(getDateFormat(today).replace(/-/g, "").substr(0,8));
-				var startDate=Number(data.startDate);
-				var endDate=Number(data.endDate);
-				if(today>=startDate && today<=endDate){
-					$("#couponArea").html("");
-					alert("쿠폰이 적용되었습니다.");
-					var html="";
-					html += "쿠폰명 : "+data.description+"<br>";
-					if(data.unitCd==="01"){
-						html += "쿠폰 할인금액 : "+data.amount+"원<br>";
-						amountTotal('01',data.amount);
-					}else{
-						html += "쿠폰 할인율 : <b>"+data.amount+"%</b>";
-						amountTotal('02',data.amount);
-					}
-					$("#couponArea").html(html);
-					
-				}else{
-					alert("쿠폰사용기한이 만료되었습니다.");
-				}					
-			}
-			
-		}
-	})
-}); */
-	
+   cartList();
+   function cartList(){
+      $.ajax({
+         async:false,
+         url:"/cart/cartList",
+         type:"get",
+         dataType:"json",
+         success:function(data){
+            $(".card-body").html();
+            var cartList="";
+            for(var datum of data){
+               cartList += "<div name='product"+datum.id+"'><div class='row'><input type='hidden' value='"+datum.id+"' class='cartId' name='id'>";
+               cartList += "<input type='hidden' value='"+datum.productId+"' id='productId' name='productId'>";
+               cartList += "<div class='col-12 col-sm-12 col-md-2 text-center'>";
+               cartList += "<img class='img-responsive' src='"+datum.filePath+"' alt='prewiew' style='max-width: 150px;'><br></div>";
+               cartList += "<div class='col-12 col-sm-12 text-md-center col-md-6'><h5 class='product-name'><strong>";
+               cartList += "<a href='/product/"+datum.productId+"' style='color:black;'>"+datum.productNm+"</a></strong></h5>";
+               cartList += "</div><div class='col-12 col-sm-12 text-sm-center col-md-4 text-md-right row'>";
+               cartList += "<div class='col-5 col-sm-5 col-md-5 text-md-right' style='padding-top: 5px'><h5><strong>";
+               
+               if(datum.saleId>0){
+                  var salePrice=0;
+                  if(datum.unitCd=='01'){
+                     salePrice = datum.price - datum.amount;
+                  }else if(datum.unitCd='02'){
+                     salePrice = datum.price*(1-(datum.amount/100));
+                  }
+                  if(salePrice < 0){
+                     salePrice = 0;
+                  }
+                  cartList += number_format(salePrice) + " 원<input type='hidden' value="+salePrice+"' name='price' class='price'></strong></h5></div>";
+               }else{
+                  cartList += number_format(datum.price) + " 원<input type='hidden' value="+datum.price+"' name='price' class='price'></strong></h5></div>"   ;
+               }
+               cartList += "<div class='col-5 col-sm-5 col-md-5'><div class='quantity'><input type='number'step='1' max='99' min='1' class='cnt' name='cnt' value='"+datum.cnt+"' size='4'>";
+               cartList += "</div></div><div class='col-2 col-sm-2 col-md-2 text-right'>";
+               cartList += "<button type='button' name='delete' class='btn btn-outline-danger btn-xs'><i class='fa fa-trash' aria-hidden='true'></i>";
+               cartList += "</button> </div></div></div><hr></div>";
+               
+            }
+            $("#list-body").html(cartList);
+            
+         }
+      });
+   }
+   
+   amountTotal();
+   
+   function amountTotal(){
+      $.ajax({
+         async:false,
+         url:"/cart/amountTotal",
+         type:"get",
+         dataType:"json",
+         success:function(data){
+            var totalPrice=0;
+            
+            for(var datum of data){
+               if(datum.saleId>0){
+                  var price=0;
+                  if(datum.unitCd=='01'){
+                     price = (datum.price - datum.amount)*datum.cnt;
+                  }else if(datum.unitCd='02'){
+                     price = (datum.price*(1-(datum.amount/100)))*datum.cnt;
+                  }
+               }else{
+                  price = datum.price*datum.cnt;
+               }
+               
+               if(price < 0){
+                  price = 0;
+               }
+               
+               totalPrice+=price;
+            }
+            $(".pull-right>b").html(number_format(totalPrice) + "원");
+         }
+      });
+   }
+   
+   $('button[name=delete]').click(function() {
+      if(confirm("해당 상품을 삭제하시겠습니까?")){
+         var n = $('button[name=delete]').index(this);
+         var listId = $(".cartId:eq(" + n + ")").val();
+         var id = 'id=' + $(".cartId:eq(" + n + ")").val();
+         $.ajax({
+            async:false,
+            url : "/cart/delete",
+            type : "post",
+            data : id,
+            dataType : "json",
+            success : function(data) {
+               $('div[name=product' + listId + ']').remove();
+               amountTotal();
+            }
+         });
+      }
+   });
+   
+   $(".cnt").change(function(){
+      var n = $('input[name=cnt]').index(this);
+      var cnt = $(".cnt:eq(" + n + ")").val();
+      var id = $(".cartId:eq(" + n + ")").val();
+      var dataList={"cnt":cnt,"id":id};
+      $.ajax({
+         async:false,
+         url : "/cart/update",
+         type : "post",
+         data : dataList,
+         dataType : "json",
+         success : function(data) {
+            amountTotal();
+         }
+      });
+   });
 </script>

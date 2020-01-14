@@ -10,7 +10,8 @@ public interface CodeRepository {
 	int codeCheck(Code code);
 	int codeInsert(Code code);
 	int codeUpdate(Code code);
-	List<Code> codeRequest(String codeGbn);
+	List<Code> codeListRequest(String codeGbn);
+	Code codeRequest(String codeGbn, String code);
 	
 	//USER
 	List<Code> productCode();

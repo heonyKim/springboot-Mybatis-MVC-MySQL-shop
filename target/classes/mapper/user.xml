@@ -3,16 +3,20 @@
 <mapper namespace="com.example.shop.repository.UserRepository">
 
 	<!-- ADMIN -->
-	<select id="findAll" resultType="com.example.shop.model.User">
-		SELECT u.email, u.addr, u.phone, c.codeNm as 'roleNm', u.authFg, u.insDt 
-		FROM user u 
-		INNER JOIN code c ON u.roleCd = c.code AND c.codeGbn = 'ROLE' 
-		WHERE u.delDt is null
-		ORDER BY u.id desc
+	<select id="userCheck" resultType="Integer">
+		SELECT COUNT(*) FROM user WHERE delDt NOT BETWEEN DATE_ADD(now(), INTERVAL -7 DAY) and now()
 	</select>
 	
+	<select id="findAll" resultType="com.example.shop.model.User">
+		SELECT email, addr, phone, authFg, insDt 
+		FROM user
+		WHERE delDt is null AND roleCd not in('99')
+		ORDER BY id desc
+	</select>
 	
-	
+    <delete id="userDelete">
+    	DELETE FROM user WHERE delDt NOT BETWEEN DATE_ADD(now(), INTERVAL -7 DAY) and now()
+    </delete>
 	
 	<!-- USER -->
 	<select id="findByEmailCheck" resultType="Integer">
@@ -20,6 +24,13 @@
 	</select>
 	
 	<select id="findByEmail" resultType="com.example.shop.model.User">
+		SELECT u.*, c.codeNm as 'roleNm'
+		FROM user u
+		INNER JOIN code c ON u.roleCd = c.code AND c.codeGbn = 'ROLE'
+		WHERE email = #{email} AND delDt is null AND authFg='Y'
+	</select>
+
+	<select id="findByEmailAuth" resultType="com.example.shop.model.User">
 		SELECT u.*, c.codeNm as 'roleNm'
 		FROM user u
 		INNER JOIN code c ON u.roleCd = c.code AND c.codeGbn = 'ROLE'
@@ -37,4 +48,9 @@
     <update id="update">
   		UPDATE user SET password=#{password}, addr=#{addr}, phone=#{phone} WHERE id=#{id}
     </update>
+    
+    <update id="dropout">
+    	UPDATE user SET delDt=now() WHERE id=#{id}
+    </update>
+    
 </mapper>

@@ -1,0 +1,27 @@
+.thumbnail-wrapper {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.thumbnail {
+  position: relative;
+  padding-top: 100%;
+  overflow: hidden;
+}
+
+.thumbnail-centered {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: translate(50%, 50%);
+}
+
+.thumbnail-img {
+/* max-width를 없애면 이미지가 확대되서 꽉채워줌 */
+  max-width: 100%;	
+  
+/*   height: 박스의 height와 같아야 한다. */
+  transform: translate(-50%, -50%);
+}

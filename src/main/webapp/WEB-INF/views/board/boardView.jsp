@@ -4,7 +4,6 @@
 body {
 	background: #f6f3f7;
 }
-
 p {
 	margin: 0;
 }
@@ -134,8 +133,9 @@ p {
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="control-box p-3 main-content" id="boardDetail">
-					
+				<div class="control-box p-3 main-content" id="boardDetail"></div>
+				<div class="text-right mt-3 mb-3">
+					<button type="button" id="btnCancel" class="btn btn-primary mb-1">목록</button>
 				</div>
 			</div>
 		</div>
@@ -146,28 +146,31 @@ p {
 <%@include file="/WEB-INF/views/include/footer.jsp"%>
 
 <script>
-var href = document.location.href;
-var endpoint = href.lastIndexOf("/");
-var boardId = href.substring(href.length,endpoint+1);
-$(document).ready(
-	function(){
+	var href = document.location.href;
+	var endpoint = href.lastIndexOf("/");
+	var boardId = href.substring(href.length,endpoint+1);
+	
+	$(document).ready(function(){
 		$.ajax({
 			async:false,
 			url:"/board/view/detail/"+boardId,
 			type:"GET",
 			success:function(data){
 				var board = JSON.parse(data);
-				var email=board.email;
-				email=email.split('@')[0];
 				var htmlContent="";
 				htmlContent += "<div class='d-flex justify-content-between mb-3'>";
 				htmlContent += "<div class='p-2'><h2>"+board.title+"</h2></div>";
 				htmlContent += "<div class='p-2' style='text-align: right;'>";
-				htmlContent += "<b>"+email+"</b><br><small>"+board.insDt+"</small>";
+				htmlContent += "<br><small>"+board.insDt+"</small>";
 				htmlContent += "</div></div><hr>"+board.content;
+				htmlContent += "<input type='hidden' id='categoryCd' value='" + board.categoryCd + "' />";
 				$("#boardDetail").html(htmlContent);
 			}
 		});
 	});
-
+	
+	$("#btnCancel").on("click", function(){
+		var categoryCd = $("#categoryCd").val();
+		location.href="/board/list?category=" + categoryCd;
+	});
 </script>

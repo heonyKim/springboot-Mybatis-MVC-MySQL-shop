@@ -33,14 +33,14 @@
 									<div class="card-body">
 										<form action="/admin/board/write" method="post">
 											<div class="form-group">
-												<input class="form-control mb-3" type="text" name="title" placeholder="Please insert ther title of post here">
+												<input class="form-control mb-3" type="text" name="title" placeholder="제목을 입력하세요.">
 											</div>
 	
 											<div class="form-group">
-												<textarea class="form-control" name="content" rows="10" placeholder="Please insert ther contents of post here"></textarea>
+												<textarea class="form-control" id="summernote" name="content" rows="10" placeholder="내용을 입력하세요."></textarea>
 											</div>
 										
-											<input type="hidden" name="categoryCd" value="${categoryCd}" />
+											<input type="hidden" id="categoryCd" name="categoryCd" value="${categoryCd}" />
 											
 											<div class="text-right">
 												<button type="submit" id="btnWrite" class="btn btn-success mb-1">작성</button>
@@ -66,12 +66,24 @@
 		<script src="/bootstrap/admin/vendor/datatables/jquery.dataTables.min.js"></script>
 		<script src="/bootstrap/admin/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 		<script src="/js/board.js"></script>
+		
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
+		<script src="/summernote/summernote-bs4.js"></script>
 	
 		<!-- Page level custom scripts -->
 		<script>
 			$("#btnCancel").on("click", function(){
-				location.href="/admin/board";
+				var categoryCd = $("#categoryCd").val();
+				location.href="/admin/board/list?category=" + categoryCd;
 			});
+			
+			$("#summernote").summernote({
+				placeholder: '내용을 입력하세요.',
+				tabsize: 2,
+				height: 200
+			});
+			
+			$('.dropdown-toggle').dropdown();
 		</script>
 	</body>
 </html>

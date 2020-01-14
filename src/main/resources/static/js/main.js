@@ -17,6 +17,25 @@ function newUserCnt(){
 	});
 }
 
+function accountCheckCnt(){
+	$.ajax({
+		async: false,
+		url: "/admin/main/accountCheckCnt",
+		type: "get", 
+		contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		data: false,
+		dataType: "json",
+		success: function(data){
+			$("#accountCheckCnt").html(number_format(data.cnt) + " 건");
+		},
+		error: function(request, status, error){
+			console.log("code:" + request.status);
+			console.log("message:" + request.responseText);
+			console.log("error:" + error);
+		}
+	});
+}
+
 function orderCheckCnt(){
 	$.ajax({
 		async: false,
@@ -27,25 +46,6 @@ function orderCheckCnt(){
 		dataType: "json",
 		success: function(data){
 			$("#orderCheckCnt").html(number_format(data.cnt) + " 개");
-		},
-		error: function(request, status, error){
-			console.log("code:" + request.status);
-			console.log("message:" + request.responseText);
-			console.log("error:" + error);
-		}
-	});
-}
-
-function sellCnt(){
-	$.ajax({
-		async: false,
-		url: "/admin/main/sellCnt",
-		type: "get", 
-		contentType: "application/x-www-form-urlencoded; charset=utf-8",
-		data: false,
-		dataType: "json",
-		success: function(data){
-			$("#sellCnt").html(number_format(data.cnt) + " 건");
 		},
 		error: function(request, status, error){
 			console.log("code:" + request.status);

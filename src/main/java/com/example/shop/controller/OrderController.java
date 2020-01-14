@@ -80,7 +80,8 @@ public class OrderController {
 	}
 	
 	@PostMapping("/update")
-	public @ResponseBody Map<String, Object> orderUpdate(Order order) {
+	public @ResponseBody Map<String, Object> orderUpdate(@AuthenticationPrincipal UserDetail userDetail, Order order) {
+		order.setInsId(userDetail.getUser().getId());
 		String resultStr = orderSvc.orderUpdate(order);
 		
 		Map<String, Object> map = new HashMap<String, Object>();

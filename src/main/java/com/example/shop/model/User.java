@@ -2,13 +2,11 @@ package com.example.shop.model;
 
 import java.sql.Timestamp;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class User {
 	private int id;
 	private String email;
@@ -24,4 +22,6 @@ public class User {
 	
 	private String roleNm;
 	private String role;
+	private String addr1;
+	private String addr2;
 }

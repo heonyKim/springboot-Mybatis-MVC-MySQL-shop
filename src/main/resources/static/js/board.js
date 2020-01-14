@@ -41,7 +41,7 @@ function boardList(categoryCd){
 		    ]
 		});
 		
-		document.getElementsByTagName("th")[2].innerText = "제목";
+		document.getElementsByTagName("th")[1].innerText = "제목";
 		
 	} else {
 		$("#boardTable").DataTable({

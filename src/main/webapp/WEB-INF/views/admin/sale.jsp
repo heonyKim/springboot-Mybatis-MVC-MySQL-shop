@@ -41,10 +41,13 @@
 												<label for="productId">상품</label>
 												<select class="form-control mb-3" name="productId" id="productId"></select>
 											</div>
-	
+											<!-- hidden price -->
+											<div id="priceArea" style="display:none;">
+											<!-- hidden price -->
+											</div>
 											<div class="form-group">
 												<label for="amount">할인값</label>
-												<input class="form-control mb-3" type="text" id="amount" name="amount" placeholder="Amount">
+												<input class="form-control mb-3" type="text" id="amount" name="amount" placeholder="숫자만 입력" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" required>
 											</div>
 	
 											<div class="form-group">
@@ -54,12 +57,12 @@
 	
 											<div class="form-group">
 												<label for="startDate">할인시작일</label>
-												<input class="form-control mb-3" type="text" id="startDate" name="startDate" placeholder="Start Date">
+												<input class="form-control mb-3" type="text" id="startDate" name="startDate" placeholder="년도,월,일 8자리로 입력. 예)19910220" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" required>
 											</div>
 	
 											<div class="form-group">
 												<label for="endDate">할인종료일</label>
-												<input class="form-control mb-3" type="text" id="endDate" name="endDate" placeholder="End Date">
+												<input class="form-control mb-3" type="text" id="endDate" name="endDate" placeholder="년도,월,일 8자리로 입력. 예)19910220" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" required>
 											</div>
 	
 											<input type="hidden" id="saleId" name="id" value="0">

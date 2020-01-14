@@ -65,7 +65,11 @@ public class CodeSvc {
 		return resultStr;
 	}
 	
-	public List<Code> codeRequest(String codeGbn){
-		return codeRep.codeRequest(codeGbn);
+	public List<Code> codeListRequest(String codeGbn){
+		return codeRep.codeListRequest(codeGbn);
+	}
+	
+	public Code codeRequest(String codeGbn, String code){
+		return codeRep.codeRequest(codeGbn, code);
 	}
 }

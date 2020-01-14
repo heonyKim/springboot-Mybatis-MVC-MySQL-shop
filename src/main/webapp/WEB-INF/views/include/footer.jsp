@@ -6,9 +6,7 @@
 	<footer class="py-5 bg-dark">
 		<div class="container">
 			<p class="m-0 text-center text-white">Copyright &copy; Your Website 2019 
-			<c:if test="${principal.user.roleCd eq 99}">
-			<a class="nav-link" href="/admin/main">Admin</a>
-			</c:if>
+			
 			</p>
                     
 		</div>
@@ -19,6 +17,17 @@
 	function numberWithCommas(x) {
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
+	
+	function inNumber(){
+        if(event.keyCode<48 || event.keyCode>57){
+           event.returnValue=false;
+           document.getElementById("phone-danger").style.display="block";
+           setTimeout(function(){
+        	   document.getElementById("phone-danger").style.display="none";
+           },500);
+        }
+    }
+
 	</script>
 	<!-- Bootstrap core JavaScript -->
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

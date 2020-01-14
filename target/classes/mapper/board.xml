@@ -32,7 +32,12 @@
 
   	<!-- USER -->
 	<select id="findAlluser" resultType="com.example.shop.model.Board">
-		SELECT b.id,b.title,u.email,b.insDt FROM board b JOIN user u ON b.insId=u.id WHERE b.delid is null and b.delDt is null and b.categoryCd=#{categoryCd} ORDER BY id DESC
+		SELECT @ROWNUM := @ROWNUM + 1 as 'rowNum', b.id, b.title, u.email, b.insDt, c.codeNm as 'categoryNm'
+		FROM board b
+		INNER JOIN user u ON b.insId = u.id
+		INNER JOIN code c ON b.categoryCd = c.code AND c.codeGbn = 'BOARD'
+		WHERE b.delid is null AND b.delDt is null AND b.categoryCd=#{categoryCd} AND (@ROWNUM:=0)=0
+		ORDER BY rowNum DESC
 	</select>
 	
 	<select id="boardCount" resultType="int">

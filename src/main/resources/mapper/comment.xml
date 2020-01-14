@@ -43,28 +43,13 @@
 		INSERT INTO comment VALUES(null, #{content}, #{rating}, #{productId}, #{parentId}, #{insId}, now(), null, null)
 	</insert>
 	
-	
-	<!-- <select id="findAll" resultType="com.example.shop.model.Board">
-		SELECT @ROWNUM := @ROWNUM + 1 as 'rowNum', b.*, u.email
-		from board b
-		INNER JOIN user u ON b.insId = u.id
-		WHERE b.delDt is null AND b.categoryCd = #{categoryCd} AND (@ROWNUM:=0)=0
-		ORDER BY rowNum desc;
-	</select> -->
-	
-	
-	
-	
-	
-
   	<!-- USER -->
 	<select id="productUserCommentList" resultType="com.example.shop.model.Comment">
-		SELECT c.*,u.email FROM comment c JOIN user u ON c.insId=u.id WHERE productId=#{productId} and parentId=0 and delId is null ORDER BY id desc
+		SELECT c.*,u.email FROM comment c LEFT OUTER JOIN user u ON c.insId=u.id WHERE productId=#{productId} and parentId=0 and delId is null ORDER BY id desc
 	</select>
 	
 	<select id="productAdminReplyList" resultType="com.example.shop.model.Comment">
 		SELECT c.*,u.email FROM comment c JOIN user u ON c.insId=u.id WHERE c.parentId=#{commentId} and delId is null;
 	</select>
-
 	
 </mapper>

@@ -4,7 +4,6 @@ body {
 .page-content {
 	width: 100%;
 	margin:  0 auto;
-
 	display: flex;
 	display: -webkit-flex;
 	justify-content: center;
@@ -34,8 +33,13 @@ body {
 	font-size: 18px;
 }
 .form-v5-content .form-detail {
-	padding: 30px 45px 30px 45px;
+	/* padding: 30px 45px 30px 45px; */
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top:20px;
+	padding-bottom:20px;
 	position: relative;
+	text-align: center;
 }
 .form-detail h2 {
 	font-weight: 700;
@@ -46,8 +50,8 @@ body {
 	margin-bottom: 40px;
 }
 .form-detail h2::after {
-	background: #3786bd;
-	width: 50px;
+	background: #007bff;
+	width: 100px;
 	height: 2px;
 	content: "";
 	position: absolute;
@@ -61,6 +65,7 @@ body {
 }
 .form-detail .form-row {
 	position: relative;
+	
 }
 .form-detail .form-row-last {
 	text-align: center;
@@ -74,7 +79,7 @@ body {
 	margin-bottom: 26px;
 }
 .form-detail input {
-	width: 94.5%;
+	width: 100%;
     padding: 10.5px 15px;
     border: 1px solid #e5e5e5;
     appearance: unset;

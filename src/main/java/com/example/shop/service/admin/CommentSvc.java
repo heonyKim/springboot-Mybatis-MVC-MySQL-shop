@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.shop.model.Comment;
 import com.example.shop.repository.CommentRepository;
@@ -19,12 +18,10 @@ public class CommentSvc {
 		return commentRep.commentList();
 	}
 	
-	//admin
 	public Comment commentView(int id) {
 		return commentRep.commentView(id);
 	}
 	
-	//user,admin
 	public String commentWrite(Comment comment) {
 		String resultStr = "";
 		
@@ -44,7 +41,6 @@ public class CommentSvc {
 		return resultStr;
 	}
 	
-	//user,admin
 	public String commentDelete(Comment comment) {
 		String resultStr = "";
 		
@@ -63,18 +59,4 @@ public class CommentSvc {
 		
 		return resultStr;
 	}
-	
-	//user
-	public List<Comment> productCommentList(int productId) {
-		List<Comment> productCommentList = commentRep.productUserCommentList(productId);
-		return productCommentList;
-	}
-	
-	//user
-	public List<Comment> productReplyList(@RequestParam("commentId") int commentId) {
-		
-		List<Comment> productReplyList = commentRep.productAdminReplyList(commentId);
-		return productReplyList;
-	}
-	
 }

@@ -4,22 +4,23 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.example.shop.repository.CartRepository">
  	
+ 	<!-- USER -->
  	<select id="CountByid" resultType="Integer">
- 		select count(*) from cart where insId=#{insId}
+ 		SELECT count(*) FROM cart c JOIN product p ON c.productId=p.id where c.insId=#{insId} AND p.delDt is null
  	</select>
  	
  	<select id="findAll" resultType="com.example.shop.model.Cart">
- 		SELECT c.id ,p.id as productId, p.filePath, p.productNm, p.price, c.cnt, s.id saleId,s.amount,s.unitCd,s.endDate 
+ 		SELECT c.id, p.id as productId, p.filePath, p.productNm, p.price, c.cnt, s.id saleId, s.amount, s.unitCd, s.endDate 
 		FROM cart c  
 		JOIN product p  
 		ON c.productId=p.id  
 		LEFT OUTER JOIN sale s 
 		ON p.id=s.productId and endDate>=#{today} 
-		WHERE c.insId=#{insId};
+		WHERE c.insId=#{insId} and p.delDt is null;
  	</select>
  	
  	<insert id="save">
- 		INSERT INTO cart VALUES(null,#{productId},#{cnt},#{insId},now(),null)
+ 		INSERT INTO cart VALUES(null, #{productId}, #{cnt}, #{insId}, now(), null)
  	</insert>
  	
  	<delete id="delete">
@@ -29,6 +30,5 @@
  	<update id="update">
  		UPDATE cart SET updDt=now(), cnt=#{cnt} WHERE id=#{id}
  	</update>
- 	
  	
  </mapper>

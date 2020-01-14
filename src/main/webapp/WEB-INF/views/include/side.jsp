@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
-<div class="col-xl-12">
+<div class="col-xl-12" style="padding: 0;">
 
 	<!-- <h1 class="my-4">TEST SHOP</h1> -->
 	
@@ -18,15 +18,16 @@
 						for (key in json) {
 							$("#navBarCategory").append(
 								"<a href='/product/list/"
-								+json[key].code+"' class='list-group-item flex-fill'>"
-								+json[key].codeNm+"</a>"		
+								+json[key].code+"'style='border-bottom: 2px solid #007bff; text-decoration:none; padding-bottom: 15px; margin:0px 10px;' class='flex-fill'>"
+								+json[key].codeNm
+								+"</a>"		
 							);
 						}
 					}
-				})\	
+				});	
 			});
 	</script>
-	<div class="navbar navbar-expand-sm justify-content-center" id="navBarCategory">
+	<div class="navbar navbar-expand-sm justify-content-center"  style="padding:0; text-align: center;" id="navBarCategory">
 	</div>
 
 </div>

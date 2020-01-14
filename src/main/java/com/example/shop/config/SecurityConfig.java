@@ -1,6 +1,5 @@
 package com.example.shop.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().disable();
 		
 		http.authorizeRequests()
-		//.antMatchers("/admin/**").authenticated()
 		.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
 		.antMatchers("/user/info/**").authenticated()
 		.antMatchers("/comment/write").authenticated()
@@ -41,7 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.usernameParameter("email")
 		.loginPage("/user/loginForm")
 		.loginProcessingUrl("/user/loginProcess")
-		.defaultSuccessUrl("/");
+		.defaultSuccessUrl("/")
+		.and()
+		.logout()
+		.logoutSuccessUrl("/");
 	}
 
 	@Autowired
@@ -51,5 +52,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(encodePWD());
 	}
-
 }

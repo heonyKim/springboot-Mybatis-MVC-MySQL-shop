@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.shop.repository.ProductRepository">
+
 	<!-- ADMIN -->
 	<select id="productList" resultType="com.example.shop.model.Product">
 		SELECT p.*, c.codeNm as 'categoryNm'
@@ -23,38 +24,92 @@
 	</update>
 	
 	<!-- USER -->
+	<select id="commentQualified" resultType="com.example.shop.model.Product">
+		SELECT * FROM orderInfo WHERE productId=#{productId} AND insId=#{userId} AND deliveryCd!='01' AND deliveryCd is not null;
+	</select>
 	
 	<select id="findAll" resultType="com.example.shop.model.Product">
-		SELECT p.*,(select avg(rating) from comment cm where p.id=cm.productId and delId is null group by productId) as ratingAvg, 
-		c.codeNm categoryNm,s.id saleId,s.amount,s.unitCd,s.startDate,s.endDate FROM product p 
+		SELECT p.*, (SELECT avg(rating)
+					 FROM comment cm
+					 WHERE p.id=cm.productId AND delId is null
+					 GROUP BY productId) as ratingAvg
+			, c.codeNm categoryNm, s.id saleId, s.amount, s.unitCd, s.startDate, s.endDate
+		FROM product p 
 		LEFT OUTER JOIN sale s ON p.id=s.productId and endDate>=#{today} 
 		JOIN code c ON c.codeGbn='PRODUCT' and c.code=p.categoryCd 
-		WHERE delId is null ORDER BY id DESC
+		WHERE delId is null
+		ORDER BY id DESC
+		LIMIT 0, 6
+	</select>
+	
+	<select id="mainListLoad" resultType="com.example.shop.model.Product">
+		SELECT p.*, (SELECT avg(rating)
+					 FROM comment cm
+					 WHERE p.id=cm.productId AND delId is null
+					 GROUP BY productId) as ratingAvg
+			, c.codeNm categoryNm, s.id saleId, s.amount, s.unitCd, s.startDate, s.endDate
+		FROM product p 
+		LEFT OUTER JOIN sale s ON p.id=s.productId and endDate>=#{today}
+		JOIN code c ON c.codeGbn='PRODUCT' and c.code=p.categoryCd 
+		WHERE delId is null
+		ORDER BY id DESC
+		LIMIT #{page}, 6
 	</select>
 	
 	<select id="productBest3" resultType="com.example.shop.model.Product">
-		SELECT p.*,(select avg(rating) from comment cm where p.id=cm.productId and delId is null group by productId) as ratingAvg, 
-		s.id saleId,s.amount,s.unitCd,s.startDate,s.endDate,count(*) FROM product p 
-		LEFT OUTER JOIN sale s ON p.id=s.productId and endDate>=#{today} 
+		SELECT p.*, (SELECT avg(rating)
+					 FROM comment cm
+					 WHERE p.id=cm.productId AND delId is null
+					 GROUP BY productId) as ratingAvg
+			, s.id saleId, s.amount, s.unitCd, s.startDate, s.endDate, count(*)
+		FROM product p 
+		LEFT OUTER JOIN sale s ON p.id=s.productId AND endDate>=#{today} 
         JOIN orderInfo o ON p.id=o.productId 
 		WHERE delId is null 
-        GROUP BY p.productNm,p.id ORDER BY count(*) DESC LIMIT 3
+        GROUP BY p.productNm, p.id
+        ORDER BY count(*) DESC
+        LIMIT 3
 	</select>
 	
 	<select id="productCategoryList" resultType="com.example.shop.model.Product">
-	SELECT p.*,(select avg(rating) from comment cm where p.id=cm.productId and delId is null group by productId) as ratingAvg, 
-		c.codeNm categoryNm,s.id saleId,s.amount,s.unitCd,s.startDate,s.endDate FROM product p 
-		LEFT OUTER JOIN sale s ON p.id=s.productId and endDate>=#{today}
-		JOIN code c ON c.codeGbn='PRODUCT' and c.code=p.categoryCd 
-		WHERE delId is null and categoryCd=#{cd} ORDER BY id DESC
+		SELECT p.*, (SELECT avg(rating)
+						 FROM comment cm
+						 WHERE p.id=cm.productId AND delId is null
+						 GROUP BY productId) as ratingAvg
+				, c.codeNm categoryNm, s.id saleId, s.amount, s.unitCd, s.startDate, s.endDate
+		FROM product p 
+		LEFT OUTER JOIN sale s ON p.id=s.productId AND endDate>=#{today}
+		JOIN code c ON c.codeGbn='PRODUCT' AND c.code=p.categoryCd 
+		WHERE delId is null and categoryCd=#{cd}
+		ORDER BY id DESC
+		LIMIT 0,6
 	</select>
 	
+	<select id="productCategoryListLoad" resultType="com.example.shop.model.Product">
+		SELECT p.*, (SELECT avg(rating)
+						 FROM comment cm
+						 WHERE p.id=cm.productId AND delId is null
+						 GROUP BY productId) as ratingAvg
+				, c.codeNm categoryNm, s.id saleId, s.amount, s.unitCd, s.startDate, s.endDate
+		FROM product p 
+		LEFT OUTER JOIN sale s ON p.id=s.productId AND endDate>=#{today}
+		JOIN code c ON c.codeGbn='PRODUCT' AND c.code=p.categoryCd 
+		WHERE delId is null AND categoryCd=#{cd}
+		ORDER BY id DESC
+		LIMIT #{page},6
+	</select>
 	
 	<select id="productView" resultType="com.example.shop.model.Product">
-		SELECT p.*,(select avg(rating) from comment cm where p.id=cm.productId and delId is null group by productId) as ratingAvg, 
-		c.codeNm categoryNm,s.id saleId,s.amount,s.unitCd,s.startDate,s.endDate FROM product p 
-		LEFT OUTER JOIN sale s ON p.id=s.productId and endDate>=#{today} 
+		SELECT p.*, (SELECT avg(rating)
+						 FROM comment cm
+						 WHERE p.id=cm.productId AND delId is null
+						 GROUP BY productId) as ratingAvg
+				, c.codeNm categoryNm, s.id saleId, s.amount, s.unitCd, s.startDate, s.endDate
+		FROM product p 
+		LEFT OUTER JOIN sale s ON p.id=s.productId AND endDate>=#{today} 
 		JOIN code c ON c.codeGbn='PRODUCT' and c.code=p.categoryCd 
-		WHERE p.id=#{id} ORDER BY id DESC
+		WHERE p.id=#{id}
+		ORDER BY id DESC
 	</select>
+	
 </mapper>

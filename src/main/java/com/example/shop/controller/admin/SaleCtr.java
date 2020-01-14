@@ -1,5 +1,6 @@
 package com.example.shop.controller.admin;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +48,13 @@ public class SaleCtr {
 		return listToJson;
 	}
 
-	@RequestMapping("/load2")
-	public @ResponseBody String productCdLoad2(@RequestParam("num") String num) {
-		List<Product> productList = saleSvc.productCdLoad2(num);
+	@RequestMapping("/load/product")
+	public @ResponseBody String saleLoadProduct(@RequestParam("num") String num) {
+
+		SimpleDateFormat format1 = new SimpleDateFormat ("yyyyMMdd");
+		String today = format1.format(System.currentTimeMillis());
+		
+		List<Product> productList = saleSvc.saleLoadProduct(num, today);
 		
 		Gson gson = new Gson();
 		String listToJson = gson.toJson(productList);

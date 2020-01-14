@@ -2,6 +2,7 @@
 function formClear(){
 	$("#orderNo").val("");
 	$("#productList").val("");
+	$("#recipient").val("");
 	$("#addr").val("");
 	$("#phone").val("");
 	$("#paymentNm").val("");
@@ -73,6 +74,7 @@ function orderView(orderNo){
 				$.each(item, function(index, jsonData){
 					$("#orderNo").val(jsonData.orderNo);
 					$("#productList").val(jsonData.productList);
+					$("#recipient").val(jsonData.recipient);
 					$("#addr").val(jsonData.addr);
 					$("#phone").val(jsonData.phone);
 					$("#paymentNm").val(jsonData.paymentNm);
@@ -161,22 +163,31 @@ function orderCartList(){
 }
 
 function orderCartListResult(sum){
+	if(sum <= 0){
+		sum = 0;
+		$("#rdCash").attr("checked", "checked");
+		$("#rdCard").attr("disabled", "disabled");
+	}
+	
 	var cartListHtml = ``;
 	cartListHtml += `<tr>`;
 	cartListHtml += `	<td colspan="4" class="text-right">`;
 	cartListHtml += `		<div class="mb-3">상품 총 금액 : <span id="totalAmt">` + number_format(sum) + `</span>원</div>`;
-	cartListHtml += `		<div class="mb-3">`;
-	cartListHtml += `			<input type="checkbox" id="couponFg" name="couponFg" onClick="applyCouponFg();" class="mb-3"/> 쿠폰 적용`;
-	cartListHtml += `			&nbsp; <input type="text" id="coupon" name="coupon" placeholder="쿠폰번호를 입력하세요." disabled="disabled"/>`;
-	cartListHtml += `			<button type="button" id="btnCoupon" onClick="applyCoupon();" disabled="disabled">적용</button>`;
-	cartListHtml += `			<br/><span id="discountAmt" style="color: var(--red);"></span>`;
-	cartListHtml += `			<input type="hidden" id="discount" value="0원"/>`;
-	cartListHtml += `		</div>`;
+	if(sum > 0){
+		cartListHtml += `		<div class="mb-3">`;
+		cartListHtml += `			<input type="checkbox" id="couponFg" name="couponFg" onClick="applyCouponFg();" class="mb-3"/><label for="couponFg">&nbsp;쿠폰 적용</label>`;
+		cartListHtml += `			&nbsp; <input type="text" id="coupon" name="coupon" placeholder="쿠폰번호를 입력하세요." disabled="disabled"/>`;
+		cartListHtml += `			<button type="button" id="btnCoupon" onClick="applyCoupon();" disabled="disabled">적용</button>`;
+		cartListHtml += `			<br/><span id="discountAmt" style="color: var(--red);"></span>`;
+		cartListHtml += `			<input type="hidden" id="discount" value="0원"/>`;
+		cartListHtml += `		</div>`;
+	}
 	cartListHtml += `		<div class="mb-3">`;
 	cartListHtml += `			<h4 style="color: var(--blue);">최종 결제 금액 : <span id="resultAmt">` + number_format(sum) + `</span>원</h4>`;
 	cartListHtml += `		</div>`;
 	cartListHtml += `	</td>`;
 	cartListHtml += `</tr>`;
+	
 	return cartListHtml;
 }
 
@@ -218,6 +229,14 @@ function applyCoupon(){
 				}
 				
 				resultAmt = totalAmt - discountAmt;
+				if(resultAmt <= 0){
+					resultAmt = 0;
+					discountAmt = totalAmt;
+					
+					$("#rdCash").attr("checked", "checked");
+					$("#rdCard").attr("disabled", "disabled");
+				}
+				
 				$("#discountAmt").html("할인 금액 : " + number_format(discountAmt) + "원");
 				$("#resultAmt").html(number_format(resultAmt));
 				$("#discount").val(data.data);
@@ -393,8 +412,8 @@ function orderResult(orderNo){
 				$.each(item, function(index, jsonData){
 					orderListHtml += `<tr>`;
 					orderListHtml += `	<td style="vertical-align: middle;">`;
-					orderListHtml += `		<img src="` + jsonData.filePath + `" width="80px"/>`;
-					orderListHtml += `		<span style="font-size: 1.25em; font-weight: 500;">` + jsonData.productNm + `</span>`;
+					orderListHtml += `		<table><tr><td><img src="` + jsonData.filePath + `" width="80px"/></td>`;
+					orderListHtml += `		<td><span style="font-size: 10.5pt; font-weight: 500;"><a href="/product/` + jsonData.productId + `" style="color: black; text-decoration: none;">` + jsonData.productNm + `</a></span></td></tr></table>`;
 					orderListHtml += `		<input type="hidden" value="` + jsonData.productId + `" />`;
 					orderListHtml += `	</td>`;
 					orderListHtml += `	<td style="vertical-align: middle;"><h5>` + jsonData.cnt + `</h5></td>`;

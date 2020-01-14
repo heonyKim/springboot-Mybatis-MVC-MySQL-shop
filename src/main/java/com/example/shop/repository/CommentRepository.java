@@ -14,5 +14,4 @@ public interface CommentRepository {
 	//USER
 	List<Comment> productUserCommentList(int productId);
 	List<Comment> productAdminReplyList(int commentId);
-	
 }

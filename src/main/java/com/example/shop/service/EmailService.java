@@ -10,16 +10,11 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import com.example.shop.repository.UserRepository;
 import com.example.shop.utils.Gmail;
 
-public class EmailSvc {
-	
-	@Autowired
-	private UserRepository uRepo;
+public class EmailService {
 	
 	public static String HashedCode25(String email) {
 		String emailAuthNum = BCrypt.hashpw(email, BCrypt.gensalt());
@@ -68,9 +63,8 @@ public class EmailSvc {
 			msg.setContent(content, "text/html; charset=UTF8");
 			Transport.send(msg);	//메일전송 최종함수
 		
-		}catch(Exception e){
+		} catch(Exception e){
 			e.printStackTrace();
 		}
-
 	}
 }

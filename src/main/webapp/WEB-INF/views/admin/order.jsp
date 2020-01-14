@@ -43,6 +43,11 @@
 											</div>
 
 											<div class="form-group">
+												<label for="recipient">수령인</label>
+												<input class="form-control mb-3" type="text" id="recipient" name="recipient" placeholder="Recipient" readonly="readonly">
+											</div>
+
+											<div class="form-group">
 												<label for="addr">주소</label>
 												<input class="form-control mb-3" type="text" id="addr" name="addr" placeholder="Address" readonly="readonly">
 											</div>

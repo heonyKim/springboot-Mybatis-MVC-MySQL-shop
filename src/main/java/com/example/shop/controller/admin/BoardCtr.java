@@ -30,6 +30,11 @@ public class BoardCtr {
 		return "redirect:/admin/board/list";
 	}
 	
+	@GetMapping("/")
+	public String boardPathRedirect2() {
+		return "redirect:/admin/board/list";
+	}
+	
 	@GetMapping("/list")
 	public String boardList() {
 		return "/admin/boardList";
@@ -59,7 +64,7 @@ public class BoardCtr {
 		int result = boardSvc.boardWrite(board);
 		
 		if(result == 1) {
-			return Script.hrefWithMsg("글을 저장하였습니다.", "/admin/board");
+			return Script.hrefWithMsg("글을 저장하였습니다.", "/admin/board/list?category=" + board.getCategoryCd());
 		}else {
 			return Script.back("글 작성을 실패하였습니다. 다시 시도해 주세요.");
 		}
@@ -109,6 +114,5 @@ public class BoardCtr {
 		}else {
 			return Script.back("글 삭제를 실패하였습니다. 다시 시도해 주세요.");
 		}
-	}
-	
+	}	
 }

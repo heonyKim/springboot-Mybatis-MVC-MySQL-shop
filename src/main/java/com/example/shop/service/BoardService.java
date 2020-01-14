@@ -9,7 +9,7 @@ import com.example.shop.model.Board;
 import com.example.shop.repository.BoardRepository;
 
 @Service
-public class UserBoardSvc {
+public class BoardService {
 
 	@Autowired
 	BoardRepository bRepo;
@@ -21,5 +21,4 @@ public class UserBoardSvc {
 	public Board boardView(int id) {
 		return bRepo.findById(id);
 	}
-	
 }

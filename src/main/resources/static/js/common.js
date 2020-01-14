@@ -84,6 +84,29 @@ function codeRequestData(code){
 	return codeList;
 }
 
+function getCodeNm(codeGbn, code){
+	var codeNm = "";
+	
+	$.ajax({
+		async: false,
+		url: "/code/" + codeGbn + "/" + code,
+		type: "get", 
+		contentType: "application/x-www-form-urlencoded; charset=utf-8",
+		data: false,
+		dataType: "json",
+		success: function(data){
+			codeNm = data.codeNm;
+		},
+		error: function(request, status, error){
+			console.log("code:" + request.status);
+			console.log("message:" + request.responseText);
+			console.log("error:" + error);
+		}
+	});
+	
+	return codeNm;
+}
+
 function number_format(number, decimals, dec_point, thousands_sep) {
 	// * example: number_format(1234.56, 2, ',', ' ');
 	// * return: '1 234,56'

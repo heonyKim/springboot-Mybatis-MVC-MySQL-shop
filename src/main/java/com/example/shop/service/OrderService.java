@@ -118,6 +118,7 @@ public class OrderService {
 			int result = orderRep.orderUpdatePayment(order);
 			
 			if(result > 0) {
+				orderRep.orderCartDelete(order.getInsId());
 				resultStr = "success";
 			} else {
 				resultStr ="fail";

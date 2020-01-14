@@ -19,6 +19,7 @@ public interface OrderRepository {
 	String orderCheck(String today);
 	int orderInsert(Order order);
 	int orderUpdatePayment(Order order);
+	int orderCartDelete(int id);
 	List<Order> orderResultView(String orderNo);
 	List<Order> orderListAll(int id);
 	List<Order> orderListDetail(String orderNo);

@@ -71,6 +71,9 @@
 		<script>
 			$(document).ready(function() {
 				$("#categoryCd").html(codeRequest("BOARD"));
+				if(!("${param.category}" == "" || "${param.category}" == "undefined" || "${param.category}" == "null")){
+					$("#categoryCd").val("${param.category}");
+				}
 				boardList($("#categoryCd").val());
 			});
 			

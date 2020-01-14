@@ -22,7 +22,7 @@
 									<a href="/product/${saleList.id}"><img class="card-img-top" src="${saleList.filePath}" alt=""></a>
 									<div class="card-body">
 										<h4 class="card-title">
-											<a href="/product/${saleList.id}">[할인]${saleList.productNm}</a>
+											<a href="/product/${saleList.id}">${saleList.productNm}</a>
 										</h4>
 										<span style="color: #777777; text-decoration: line-through;"><fmt:formatNumber value="${saleList.price}" type="number"></fmt:formatNumber>원</span>
 										<h5>
@@ -32,7 +32,14 @@
 										<p class="card-text">~${saleList.endDate}</p>
 									</div>
 									<div class="card-footer">
-										<b style="color:#EBE028;">&#9733;</b> ${saleList.ratingAvg}
+										<c:choose>
+											<c:when test="${saleList.ratingAvg !=0.00}">
+												<b style="color:#EBE028;">&#9733;</b><fmt:formatNumber value="${saleList.ratingAvg}" pattern="0.00"></fmt:formatNumber>
+											</c:when>
+											<c:otherwise>
+												<small>리뷰가 없습니다</small>
+											</c:otherwise>
+										</c:choose>
 									</div>
 								</div>
 							</div>

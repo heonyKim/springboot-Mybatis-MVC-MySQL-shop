@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.shop.model.User;
 
+@SuppressWarnings("serial")
 public class UserDetail implements UserDetails{
 
 	private User user;

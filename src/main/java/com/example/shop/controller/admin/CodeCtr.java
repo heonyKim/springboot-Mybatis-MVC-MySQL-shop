@@ -67,9 +67,16 @@ public class CodeCtr {
 	}
 	
 	@GetMapping("/code/{codeGbn}")
-	public @ResponseBody List<Code> codeRequest(@PathVariable String codeGbn) {
-		List<Code> codeList = codeSvc.codeRequest(codeGbn);
+	public @ResponseBody List<Code> codeListRequest(@PathVariable String codeGbn) {
+		List<Code> codeList = codeSvc.codeListRequest(codeGbn);
 		
 		return codeList;
+	}
+	
+	@GetMapping("/code/{codeGbn}/{code}")
+	public @ResponseBody Code codeRequest(@PathVariable String codeGbn, @PathVariable String code) {
+		Code c = codeSvc.codeRequest(codeGbn, code);
+		
+		return c;
 	}
 }

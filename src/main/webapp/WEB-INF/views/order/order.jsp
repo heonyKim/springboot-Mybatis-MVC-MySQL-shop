@@ -20,7 +20,7 @@
 						</tbody>
 					</table>
 					
-					<h3 class="mt-5 mb-4">배송 정보</h3>
+					<h3 class="mb-4">배송 정보</h3>
 					<form method="post" novalidate="novalidate">
 						<div class="col-md-12 form-group">
 							<label for="name">수령인</label>
@@ -39,9 +39,8 @@
 					<h3 class="mt-5 mb-4">결제 정보</h3>
 					<form method="post" novalidate="novalidate">
 						<div class="col-md-12 form-group">
-							<label for="paymentCd">결제수단</label><br />
 							&nbsp; <input type="radio" id="rdCash" name="paymentCd" />
-							<label for="rdCash">현금</label>
+							<label for="rdCash">계좌이체</label>
 							&nbsp; <input type="radio" id="rdCard" name="paymentCd" />
 							<label for="rdCard">카드</label>
 						</div>

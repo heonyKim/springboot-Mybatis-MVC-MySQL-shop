@@ -929,7 +929,7 @@ a:focus {
   }
 
   .sidebar.toggled {
-    width: 100vw !important;
+    width: 50vw !important;
     transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.3s ease-in-out;
   }

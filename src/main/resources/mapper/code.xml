@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.shop.repository.CodeRepository">
+
 	<!-- ADMIN -->
 	<select id="codeList" resultType="com.example.shop.model.Code">
 		SELECT * FROM code ORDER BY codeGbn, code
@@ -15,11 +16,15 @@
 	</insert>
 	
 	<update id="codeUpdate">
-		UPDATE code SET codeGbn=#{codeGbn}, code=#{code}, codeNm=#{codeNm}, useFg=#{useFg}, updId=#{updId}, updDt=now() WHERE id=#{id}
+		UPDATE code SET useFg=#{useFg}, updId=#{updId}, updDt=now() WHERE id=#{id}
 	</update>
 	
-	<select id="codeRequest" resultType="com.example.shop.model.Code">
+	<select id="codeListRequest" resultType="com.example.shop.model.Code">
 		SELECT * FROM code WHERE codeGbn=#{codeGbn} AND useFg='Y' AND code not in ('00') ORDER BY code;
+	</select>
+	
+	<select id="codeRequest" resultType="com.example.shop.model.Code">
+		SELECT * FROM code WHERE codeGbn=#{codeGbn} AND useFg='Y' AND code=#{code};
 	</select>
 	
 	<!-- USER -->
