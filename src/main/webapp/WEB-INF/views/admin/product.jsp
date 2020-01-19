@@ -34,7 +34,7 @@
 										<form id="productForm">
 											<div class="form-group">
 												<label for="productNm">상품명</label>
-												<input class="form-control mb-3" type="text" id="productNm" name="productNm" placeholder="Product Name">
+												<input class="form-control mb-3" type="text" id="productNm" name="productNm" placeholder="상품명">
 											</div>
 	
 											<div class="form-group">
@@ -56,7 +56,7 @@
 	
 											<div class="form-group">
 												<label for="description">상품설명</label>
-												<textarea class="form-control" id="description" name="description" rows="3" placeholder="Please insert description of product here"></textarea>
+												<textarea class="form-control" id="description" name="description" rows="3" placeholder="상품에 대한 설명을 입력하세요."></textarea>
 											</div>
 
 											<input class="form-control" type="hidden" id="id" name="id" value="0" />
@@ -67,6 +67,7 @@
 											<div class="form-group">
 												<label for="productFile">상품사진</label>
 												<input class="form-control mb-3" type="file" id="productFile" name="productFile">
+												<input style = "display:none;" type="file" id="resizeProductFile" name="resizeProductFile">
 											</div>
 											
 											<div class="form-group text-center">
@@ -89,7 +90,7 @@
 										<h6 class="m-0 font-weight-bold text-primary">목록</h6>
 									</div>
 									<div class="table-responsive p-3">
-										<table class="ui celled table" style="width:100%"  id="productTable">
+										<table class="ui celled table" style="width: 100%;"  id="productTable">
 											<thead class="thead-light">
 												<tr>
 													<th>카테고리</th>

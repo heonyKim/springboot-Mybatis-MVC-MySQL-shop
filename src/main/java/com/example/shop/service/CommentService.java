@@ -15,6 +15,7 @@ public class CommentService {
 	@Autowired
 	private CommentRepository commentRep;
 	
+	
 	public String commentWrite(Comment comment) {
 		String resultStr = "";
 		
@@ -53,8 +54,17 @@ public class CommentService {
 		return resultStr;
 	}
 	
-	public List<Comment> productCommentList(int productId) {
-		List<Comment> productCommentList = commentRep.productUserCommentList(productId);
+
+	public int productUserCommentListCount(int productId) {
+		List<Comment> comments = commentRep.productUserCommentListCount(productId);
+		int pageMax = (int) Math.ceil(comments.size()/5.0);
+		return pageMax;
+	}
+	
+	
+	public List<Comment> productCommentList(int productId,int page) {
+		int range = (page-1)*5;
+		List<Comment> productCommentList = commentRep.productUserCommentList(productId,range);
 		return productCommentList;
 	}
 	

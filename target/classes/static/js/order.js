@@ -57,7 +57,12 @@ function orderList(){
 			{data: "orderNo"},
 			{data: "email"},
 			{data: "deliveryNm"}
-		]
+		],
+		columnDefs: [
+			{"targets":[0], "width": "25%"},
+			{"targets":[1], "width": "50%"},
+			{"targets":[2], "width": "25%"}
+	    ]
 	});
 }
 
@@ -461,15 +466,21 @@ function orderListAll(){
 			var orderListHtml = ``;
 			
 			$.each(data, function(index, item){
-				$.each(item, function(index, jsonData){
+				if(item.length > 0){
+					$.each(item, function(index, jsonData){
+						orderListHtml += `<tr>`;
+						orderListHtml += `	<td style="vertical-align: middle;"><h5>`+ jsonData.orderNo + `</h5></td>`;
+						orderListHtml += `	<td style="vertical-align: middle;"><h5>`+ jsonData.productNm + `</h5></td>`;
+						orderListHtml += `	<td style="vertical-align: middle;"><h5>` + jsonData.orderNo.substr(0, 8).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3') + `</h5></td>`;
+						orderListHtml += `	<td style="vertical-align: middle;"><h5>` + number_format(jsonData.amount - jsonData.discountAmt) + `원</h5></td>`;
+						orderListHtml += `	<td style="vertical-align: middle;"><h5>` + jsonData.deliveryNm + `</h5></td>`;
+						orderListHtml += `</tr>`;
+					});
+				} else {
 					orderListHtml += `<tr>`;
-					orderListHtml += `	<td style="vertical-align: middle;"><h5>`+ jsonData.orderNo + `</h5></td>`;
-					orderListHtml += `	<td style="vertical-align: middle;"><h5>`+ jsonData.productNm + `</h5></td>`;
-					orderListHtml += `	<td style="vertical-align: middle;"><h5>` + jsonData.orderNo.substr(0, 8).replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3') + `</h5></td>`;
-					orderListHtml += `	<td style="vertical-align: middle;"><h5>` + number_format(jsonData.amount - jsonData.discountAmt) + `원</h5></td>`;
-					orderListHtml += `	<td style="vertical-align: middle;"><h5>` + jsonData.deliveryNm + `</h5></td>`;
+					orderListHtml += `	<td style="vertical-align: middle;" colspan="5" class="text-center"><h5>주문한 내역이 없습니다.</h5></td>`;
 					orderListHtml += `</tr>`;
-				});
+				}
 			});
 			
 			$("#orderList").html(orderListHtml);

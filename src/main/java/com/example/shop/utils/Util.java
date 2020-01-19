@@ -50,13 +50,13 @@ public class Util {
 	
 	public static String replaceTag(String content) {
 		content = content
-				.replaceAll("&#", "")
-				.replaceAll("&", "&amp;")
-				.replaceAll("<", "&lt;")
-				.replaceAll(">", "&gt;")
-				.replaceAll("\"", "&quot;")
-				.replaceAll("\'", "&#x27;")
-				.replaceAll("/", "&#x2F;")
+//				.replaceAll("&#", "")
+//				.replaceAll("&", "&amp;")
+//				.replaceAll("<", "&lt;")
+//				.replaceAll(">", "&gt;")
+//				.replaceAll("\"", "&quot;")
+//				.replaceAll("\'", "&#x27;")
+//				.replaceAll("/", "&#x2F;")
 				.replaceAll("eval\\((.*)\\)", "")
 				.replaceAll("[\\\"\\'][\\s]*javascript:(.*)[\\\"\\']", "\"\"")
 				.replaceAll("[\\\"\\'][\\s]*vbscript:(.*)[\\\"\\']", "\"\"")

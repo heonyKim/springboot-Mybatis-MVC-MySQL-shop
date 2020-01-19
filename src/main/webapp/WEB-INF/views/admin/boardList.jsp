@@ -32,11 +32,8 @@
 									<select class="form-control mb-3" id="categoryCd" name="categoryCd" style="width: auto;"></select>
 								</div>
 								<div class="card mb-4" id="boardForm">
-									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-										<h6 class="m-0 font-weight-bold text-primary">선택된 게시판 카테고리명</h6>
-									</div>
 									<div class="table-responsive p-3">
-										<table class="table align-items-center table-flush table-hover" id="boardTable">
+										<table class="table align-items-center table-flush table-hover" style="width: 100%" id="boardTable">
 											<thead class="thead-light">
 												<tr>
 													<th>번호</th>

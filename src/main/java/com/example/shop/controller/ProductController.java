@@ -28,6 +28,7 @@ public class ProductController {
 			@AuthenticationPrincipal UserDetail user,
 			Model model) {
 		Product product = pSvc.productDetail(id);
+		
 		if(user!=null) {
 			List<Product> commentQualifiedList = pSvc.commentQualified(id, user.getUser().getId()) ;
 			if(commentQualifiedList.size()>0) {

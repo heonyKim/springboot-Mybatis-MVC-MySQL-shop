@@ -34,18 +34,18 @@
 										<form id="couponForm" method="post">
 											<div class="form-group">
 												<label for="couponCd">쿠폰코드</label>
-												<input class="form-control mb-3" type="text" size="20" id="code" name="code" placeholder="Coupon Code" required>
+												<input class="form-control mb-3" type="text" size="20" id="code" name="code" placeholder="쿠폰 코드(임의의 문자열 또는 랜덤 생성 문자열)를 입력하세요" required="required">
 												<button type="button" onclick="show_uuid()" class="btn btn-primary mb-1">쿠폰번호발급</button>
 											</div>
 											
 											<div class="form-group">
 												<label for="couponNm">쿠폰명</label>
-												<input class="form-control mb-3" type="text" id="description" name="description" placeholder="Coupon Name" required>
+												<input class="form-control mb-3" type="text" id="description" name="description" placeholder="쿠폰명" required="required">
 											</div>
 	
 											<div class="form-group">
 												<label for="amount">할인값</label>
-												<input class="form-control mb-3" type="text" id="amount" name="amount" placeholder="Amount" required>
+												<input class="form-control mb-3" type="text" id="amount" name="amount" placeholder="할인값(숫자만 입력)" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" required="required">
 											</div>
 	
 											<div class="form-group">
@@ -55,12 +55,12 @@
 	
 											<div class="form-group">
 												<label for="startDate">쿠폰 유효시작일</label>
-												<input class="form-control mb-3" type="text" id="startDate" name="startDate" placeholder="Start Date" required>
+												<input class="form-control mb-3" type="text" id="startDate" name="startDate"  placeholder="쿠폰 시작일(년도, 월, 일 8자리로 입력) ex)20200131" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" required="required" maxlength="8">
 											</div>
 	
 											<div class="form-group">
 												<label for="endDate">쿠폰 유효종료일</label>
-												<input class="form-control mb-3" type="text" id="endDate" name="endDate" placeholder="End Date" required>
+												<input class="form-control mb-3" type="text" id="endDate" name="endDate"  placeholder="쿠폰 종료일(년도, 월, 일 8자리로 입력) ex)20200131" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" required="required" maxlength="8">
 											</div>
 											
 											<input type="hidden" id="couponId" name="id" value="0">
@@ -77,11 +77,7 @@
 							<div class="col-lg-6">
 								<div class="card mb-4">
 									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-										<h6 class="m-0 font-weight-bold text-primary">목록 &nbsp; 
-											<button type="button" onclick="reloadList()" class="btn btn-light">
-												<i class="fa fa-refresh"></i>
-											</button>
-										</h6>
+										<h6 class="m-0 font-weight-bold text-primary">목록</h6>
 									</div>
 									<div class="table-responsive p-3">
 									

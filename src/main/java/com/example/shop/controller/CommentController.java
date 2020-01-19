@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,9 +22,22 @@ public class CommentController {
 	@Autowired
 	private CommentService cSvc;
 	
-	@RequestMapping("")
-	public String productCommentList(@RequestParam("productId") int productId) {
-		List<Comment> productCommentList = cSvc.productCommentList(productId);
+	@RequestMapping("/pagination")
+	public String commentPagination(@RequestParam("productId") int productId) {
+		
+		int pageMax = cSvc.productUserCommentListCount(productId);
+		if(pageMax==0) {
+			pageMax = 1;
+		}
+		return pageMax+"";
+	}
+	
+	@RequestMapping("/{page}")
+	public String productCommentList(
+			@RequestParam("productId") int productId,
+			@PathVariable("page")int page) {
+		List<Comment> productCommentList = cSvc.productCommentList(productId,page);
+		
 		for (Comment comment : productCommentList) {
 			if(comment.getEmail()==null) {
 				comment.setEmail("(탈퇴한 회원입니다)");

@@ -34,38 +34,38 @@
 										<form id="orderForm">
 											<div class="form-group">
 												<label for="orderNo">주문번호</label>
-												<input class="form-control mb-3" type="text" id="orderNo" name="orderNo" placeholder="Order No" readonly="readonly">
+												<input class="form-control mb-3" type="text" id="orderNo" name="orderNo" placeholder="주문번호" readonly="readonly">
 											</div>
 											
 											<div class="form-group">
 												<label for="productList">주문상품정보</label>
-												<textarea class="form-control" id="productList" name="productList" rows="3" disabled="disabled"></textarea>
+												<textarea class="form-control" id="productList" name="productList" rows="3" disabled="disabled" placeholder="상품정보"></textarea>
 											</div>
 
 											<div class="form-group">
 												<label for="recipient">수령인</label>
-												<input class="form-control mb-3" type="text" id="recipient" name="recipient" placeholder="Recipient" readonly="readonly">
+												<input class="form-control mb-3" type="text" id="recipient" name="recipient" placeholder="수령인" readonly="readonly">
 											</div>
 
 											<div class="form-group">
 												<label for="addr">주소</label>
-												<input class="form-control mb-3" type="text" id="addr" name="addr" placeholder="Address" readonly="readonly">
+												<input class="form-control mb-3" type="text" id="addr" name="addr" placeholder="주소" readonly="readonly">
 											</div>
 	
 											<div class="form-group">
 												<label for="phone">연락처</label>
-												<input class="form-control mb-3" type="text" id="phone" name="phone" placeholder="Phone" readonly="readonly">
+												<input class="form-control mb-3" type="text" id="phone" name="phone" placeholder="연락처" readonly="readonly">
 											</div>
 	
 											<div class="form-group">
 												<label for="paymentCdNm">결제수단</label>
-												<input class="form-control mb-3" type="text" id="paymentNm" name="paymentNm" placeholder="Payment" readonly="readonly">
+												<input class="form-control mb-3" type="text" id="paymentNm" name="paymentNm" placeholder="결제수단" readonly="readonly">
 											</div>
 	
 											<div class="form-group">
 												<label for="amount">총 금액</label>
 												<div class="input-group mb-3">
-													<input type="text" class="form-control text-right" id="amount" name="amount" readonly="readonly">
+													<input type="text" class="form-control text-right" id="amount" name="amount" readonly="readonly" placeholder="주문금액">
 													<div class="input-group-append">
 														<span class="input-group-text">원</span>
 													</div>
@@ -75,7 +75,7 @@
 											<div class="form-group">
 												<label for="discountAmt">할인금액</label>
 												<div class="input-group mb-3">
-													<input type="text" class="form-control text-right" id="discountAmt" name="discountAmt" readonly="readonly">
+													<input type="text" class="form-control text-right" id="discountAmt" name="discountAmt" readonly="readonly" placeholder="할인금액">
 													<div class="input-group-append">
 														<span class="input-group-text">원</span>
 													</div>
@@ -85,7 +85,7 @@
 											<div class="form-group">
 												<label for="resultAmt">최종결제금액</label>
 												<div class="input-group mb-3">
-													<input type="text" class="form-control text-right" id="resultAmt" name="resultAmt" readonly="readonly">
+													<input type="text" class="form-control text-right" id="resultAmt" name="resultAmt" readonly="readonly" placeholder="실결제금액">
 													<div class="input-group-append">
 														<span class="input-group-text">원</span>
 													</div>
@@ -94,7 +94,7 @@
 	
 											<div class="form-group">
 												<label for="orderDate">주문일시</label>
-												<input class="form-control mb-3" type="text" id="orderDate" name="orderDate" placeholder="Order DateTime" readonly="readonly">
+												<input class="form-control mb-3" type="text" id="orderDate" name="orderDate" placeholder="주문일시" readonly="readonly">
 											</div>
 	
 											<div class="form-group">
@@ -115,7 +115,7 @@
 										<h6 class="m-0 font-weight-bold text-primary">목록</h6>
 									</div>
 									<div class="table-responsive p-3">
-										<table class="table align-items-center table-flush table-hover" id="orderTable">
+										<table class="table align-items-center table-flush table-hover" id="orderTable" style="width: 100%;">
 											<thead class="thead-light">
 												<tr>
 													<th>주문번호</th>

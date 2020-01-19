@@ -72,7 +72,7 @@
 										<h6 class="m-0 font-weight-bold text-primary">목록</h6>
 									</div>
 									<div class="table-responsive p-3">
-										<table class="ui celled table" style="width:100%" id="codeTable">
+										<table class="ui table" style="width:100%" id="codeTable">
 											<thead class="thead-light">
 												<tr>
 													<th>코드구분</th>

@@ -87,7 +87,12 @@ function productList(){
 			{data: "categoryNm"},
 			{data: "productNm"},
 			{data: "price"}
-		]
+		],
+		columnDefs: [
+			{"targets":[0], "width": "15%"},
+			{"targets":[1], "width": "70%"},
+			{"targets":[2], "width": "15%"},
+	    ]
 	});
 }
 
@@ -189,21 +194,48 @@ function handleImgFile(e){
 		return;
 	} else {
 		var reader = new FileReader();
-		
-		reader.onload = function(e){
-			$("#productPic").attr("src", e.target.result);
-		}
-		
 		reader.readAsDataURL(f);
 		
-		uploadProductPic();
+		reader.onload = function(){
+			var img = document.createElement("img");
+			img.src = reader.result;
+			img.onload = function(){
+				var canvas = document.createElement("canvas");
+				var ctx = canvas.getContext("2d");
+				ctx.drawImage(img,0,0);
+				var MAX_WIDTH=500;
+				var MAX_HEIGHT=500;
+				var width = this.width;
+				var height =this.height;
+				
+				if (width > height) {
+					if (width > MAX_WIDTH) {
+						height *= MAX_WIDTH / width;
+						width = MAX_WIDTH;
+					}
+				} else {
+					if (height > MAX_HEIGHT) {
+						width *= MAX_HEIGHT / height;
+						height = MAX_HEIGHT;
+					}
+				}
+				canvas.width = width;
+				canvas.height = height;
+				ctx = canvas.getContext("2d");
+				ctx.drawImage(img,0,0,width,height);
+				var dataUrl=canvas.toDataURL("image/png");
+				$("#productPic").attr("src", dataUrl);
+				
+				var blob = dataUrlToBlob(dataUrl);
+				var uploadForm = new FormData();
+				uploadForm.append("productFile",blob,f.name);
+				uploadProductPic(uploadForm);
+			};
+		};
 	}
 }
 
-
-function uploadProductPic(){
-	var uploadForm = new FormData($('#uploadForm')[0]);
-
+function uploadProductPic(uploadForm){
 	$.ajax({
 		async : false,
 		url: "/admin/product/upload",
@@ -226,4 +258,28 @@ function uploadProductPic(){
 			console.log("error:" + error);
 		}
 	});
+}
+
+function dataUrlToBlob(dataUrl){
+	var BASE64_MARKER = ";base64,";
+	
+	if (dataUrl.indexOf(BASE64_MARKER) === -1) {
+		var parts = dataUrl.split(",");
+		var contentType = parts[0].split(":")[1];
+		var raw = parts[1];
+		return new Blob([raw], {
+			type: contentType
+		});
+	}
+	
+	var parts = dataUrl.split(BASE64_MARKER);
+	var contentType = parts[0].split(":")[1]; // 'image/png'
+	var raw = window.atob(parts[1]);
+	var uInt8Array = new Uint8Array(raw.length);
+	var i=0;
+	while(i<raw.length){
+		uInt8Array[i] = raw.charCodeAt(i);
+		i++;
+	}
+	return new Blob([uInt8Array],{type:contentType});
 }

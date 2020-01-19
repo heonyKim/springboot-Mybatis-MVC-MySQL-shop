@@ -37,7 +37,11 @@ function boardList(categoryCd){
 				}
 			],
 			columnDefs: [
-		        { targets: [1], visible: false},
+				{"targets":[0], "width": "10%"},
+				{"targets":[1], "width": "0%", "visible": false},
+				{"targets":[2], "width": "60%"},
+				{"targets":[3], "width": "15%"},
+				{"targets":[4], "width": "15%"}
 		    ]
 		});
 		
@@ -86,7 +90,11 @@ function boardList(categoryCd){
 				}
 			],
 			columnDefs: [
-		        { targets: [1], visible: true},
+				{"targets":[0], "width": "10%"},
+				{"targets":[1], "width": "10%", "visible": true},
+				{"targets":[2], "width": "50%"},
+				{"targets":[3], "width": "15%"},
+				{"targets":[4], "width": "15%"}
 		    ]
 		});
 		

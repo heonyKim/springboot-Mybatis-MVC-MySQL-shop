@@ -12,6 +12,7 @@ public interface CommentRepository {
 	int commentDelete(Comment comment);
 	
 	//USER
-	List<Comment> productUserCommentList(int productId);
+	List<Comment> productUserCommentList(int productId,int range);
 	List<Comment> productAdminReplyList(int commentId);
+	List<Comment> productUserCommentListCount(int productId);
 }

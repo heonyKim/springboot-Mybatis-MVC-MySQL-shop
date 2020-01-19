@@ -89,7 +89,13 @@ function saleList(){
 					return year + "-" + month + "-" + day;
 				}
 			}
-		]
+		],
+		columnDefs: [
+			{"targets":[0], "width": "49%"},
+			{"targets":[1], "width": "15%"},
+			{"targets":[2], "width": "18%"},
+			{"targets":[3], "width": "18%"}
+	    ]
 	});
 }
 
@@ -179,10 +185,10 @@ function saleSubmit() {
 						}
 					});
 				}
-			}else{
+			} else {
 				alert("할인된 최종 금액이 100원 이상 이어야 합니다.");
 			}
-		}else{
+		} else {
 			if(amount<=100){
 				if (id > 0) {
 					$.ajax({
@@ -217,13 +223,9 @@ function saleSubmit() {
 						}
 					});
 				}
-			}else{
+			} else {
 				alert("할인율은 0~100 까지만 입력 가능합니다.");
 			}
 		}
-		
-		
-		
-		
 	}
 }

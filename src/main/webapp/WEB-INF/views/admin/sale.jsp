@@ -47,7 +47,7 @@
 											</div>
 											<div class="form-group">
 												<label for="amount">할인값</label>
-												<input class="form-control mb-3" type="text" id="amount" name="amount" placeholder="숫자만 입력" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" required>
+												<input class="form-control mb-3" type="text" id="amount" name="amount" placeholder="숫자만 입력해 주세요." onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" required="required">
 											</div>
 	
 											<div class="form-group">
@@ -57,12 +57,12 @@
 	
 											<div class="form-group">
 												<label for="startDate">할인시작일</label>
-												<input class="form-control mb-3" type="text" id="startDate" name="startDate" placeholder="년도,월,일 8자리로 입력. 예)19910220" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" required>
+												<input class="form-control mb-3" type="text" id="startDate" name="startDate" placeholder="년도, 월, 일 8자리로 입력. ex)19910220" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" required="required" maxlength="8">
 											</div>
 	
 											<div class="form-group">
 												<label for="endDate">할인종료일</label>
-												<input class="form-control mb-3" type="text" id="endDate" name="endDate" placeholder="년도,월,일 8자리로 입력. 예)19910220" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" required>
+												<input class="form-control mb-3" type="text" id="endDate" name="endDate" placeholder="년도, 월, 일 8자리로 입력. ex)19910220" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" required="required" maxlength="8">
 											</div>
 	
 											<input type="hidden" id="saleId" name="id" value="0">

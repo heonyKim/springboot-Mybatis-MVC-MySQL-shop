@@ -45,6 +45,10 @@
 	
   	<!-- USER -->
 	<select id="productUserCommentList" resultType="com.example.shop.model.Comment">
+		SELECT c.*,u.email FROM comment c LEFT OUTER JOIN user u ON c.insId=u.id WHERE productId=#{productId} and parentId=0 and delId is null ORDER BY id desc LIMIT #{range},5;
+	</select>
+	
+	<select id="productUserCommentListCount" resultType="com.example.shop.model.Comment">
 		SELECT c.*,u.email FROM comment c LEFT OUTER JOIN user u ON c.insId=u.id WHERE productId=#{productId} and parentId=0 and delId is null ORDER BY id desc
 	</select>
 	

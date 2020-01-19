@@ -60,7 +60,13 @@ function couponList(){
 					return year + "-" + month + "-" + day;
 				}
 			}
-		]
+		],
+		columnDefs: [
+			{"targets":[0], "width": "49%"},
+			{"targets":[1], "width": "15%"},
+			{"targets":[2], "width": "18%"},
+			{"targets":[2], "width": "18%"}
+	    ]
 	});
 }
 
@@ -109,39 +115,54 @@ function couponSubmit() {
 	if(confirm("진행하시겠습니까?")) {
 		var id = $("#couponId").val();
 		var formData = $("#couponForm").serialize();
-
-		if (id > 0) {
-			$.ajax({
-				cache : false,
-				url : "/admin/coupon/update",
-				type : "POST",
-				data : formData,
-				success : function(data) {
-					var myTable = $("#couponTable").DataTable();
-					myTable.ajax.reload();
-					alert("수정이 완료되었습니다.");
-				},
-				error : function(error) {
-					alert("error : " + error);
-				}
-			});
-		} else {
-			$.ajax({
-				cache : false,
-				url : "/admin/coupon/insert",
-				type : "POST",
-				data : formData,
-				success : function(data) {
-					var myTable = $("#couponTable").DataTable();
-					myTable.ajax.reload();
-					formClear();
-					alert("신규 쿠폰을 발급하였습니다.");
-				},
-				error : function(error) {
-					console.log("error : " + error);
-					alert("상세정보를 모두 기입하십시오.");
-				}
-			});
+		
+		if(couponInsertCheck() == true){
+			if (id > 0) {
+				$.ajax({
+					cache : false,
+					url : "/admin/coupon/update",
+					type : "POST",
+					data : formData,
+					success : function(data) {
+						var myTable = $("#couponTable").DataTable();
+						myTable.ajax.reload();
+						alert("수정이 완료되었습니다.");
+					},
+					error : function(error) {
+						alert("error : " + error);
+					}
+				});
+			} else {
+				$.ajax({
+					cache : false,
+					url : "/admin/coupon/insert",
+					type : "POST",
+					data : formData,
+					success : function(data) {
+						var myTable = $("#couponTable").DataTable();
+						myTable.ajax.reload();
+						formClear();
+						alert("신규 쿠폰을 발급하였습니다.");
+					},
+					error : function(error) {
+						console.log("error : " + error);
+						alert("상세정보를 모두 기입하십시오.");
+					}
+				});
+			}
 		}
+	}
+}
+
+function couponInsertCheck(){
+	if($("#unitCd").val() == "02"){
+		if($("#amount").val() <= 100){
+			return true;
+		} else {
+			alert("할인율은 0~100 까지만 입력 가능합니다.");
+			return false;
+		}
+	} else {
+		return true;
 	}
 }
