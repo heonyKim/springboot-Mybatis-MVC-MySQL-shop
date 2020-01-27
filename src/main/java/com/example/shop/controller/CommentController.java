@@ -23,21 +23,29 @@ public class CommentController {
 	private CommentService cSvc;
 	
 	@RequestMapping("/pagination")
-	public String commentPagination(@RequestParam("productId") int productId) {
-		
-		int pageMax = cSvc.productUserCommentListCount(productId);
-		if(pageMax==0) {
-			pageMax = 1;
-		}
-		return pageMax+"";
+	public int pagination(@RequestParam("productId") int productId) {
+		int count = cSvc.productCommentListCount(productId);
+		return count;
 	}
+	
+	@RequestMapping("/ratingMean")
+	public double ratingMean(@RequestParam("productId") int productId) {
+		List<Comment> commentTotal = cSvc.productRatingMean(productId);
+		int sum = 0;
+		for (Comment comment : commentTotal) {
+			sum += comment.getRating();
+		}
+		double ratingMean = sum*1.0/commentTotal.size();
+		return ratingMean;
+	}
+	
 	
 	@RequestMapping("/{page}")
 	public String productCommentList(
 			@RequestParam("productId") int productId,
-			@PathVariable("page")int page) {
+			@PathVariable("page") int page) {
+		page = (page-1)*5;
 		List<Comment> productCommentList = cSvc.productCommentList(productId,page);
-		
 		for (Comment comment : productCommentList) {
 			if(comment.getEmail()==null) {
 				comment.setEmail("(탈퇴한 회원입니다)");

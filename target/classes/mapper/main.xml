@@ -17,7 +17,7 @@
 	<select id="orderCheckCnt" resultType="Integer">
 		SELECT count(distinct o.orderNo)
 		FROM orderInfo o
-		INNER JOIN user u on o.insId = u.id
+		LEFT OUTER JOIN user u on o.insId = u.id
 		WHERE deliveryCd = '02' AND paymentCd in ('01', '02')
 	</select>
 	

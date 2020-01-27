@@ -5,10 +5,10 @@
 	<!-- ADMIN -->
 	<select id="commentList" resultType="com.example.shop.model.Comment">
 	SELECT com.*, @ROWNUM := @ROWNUM + 1 as 'rowNum'
-	FROM (SELECT c.*, u.email
+	FROM (SELECT c.*, ifnull(u.email, '탈퇴한 유저') as email
 			, CASE WHEN ifnull(cAnswer.content, 'NONE') = 'NONE' THEN '답변대기' ELSE '답변완료' END as 'answerContent'
 		FROM comment c
-		INNER JOIN user u
+		LEFT OUTER JOIN user u
 			ON c.insId = u.id
 		LEFT OUTER JOIN comment cAnswer
 			ON c.id = cAnswer.parentId
@@ -22,9 +22,9 @@
 	</select>
 	
 	<select id="commentView" resultType="com.example.shop.model.Comment">
-		SELECT c.*, u.email, p.productNm, cAnswer.content as 'answerContent', cAnswer.id as 'answerId'
+		SELECT c.*, ifnull(u.email, '탈퇴한 유저') as email, p.productNm, cAnswer.content as 'answerContent', cAnswer.id as 'answerId'
 		FROM comment c
-		INNER JOIN user u
+		LEFT OUTER JOIN user u
 			ON c.insId = u.id
 		INNER JOIN product p
 			ON c.productId = p.id
@@ -44,16 +44,30 @@
 	</insert>
 	
   	<!-- USER -->
+	<!-- USER -->
 	<select id="productUserCommentList" resultType="com.example.shop.model.Comment">
-		SELECT c.*,u.email FROM comment c LEFT OUTER JOIN user u ON c.insId=u.id WHERE productId=#{productId} and parentId=0 and delId is null ORDER BY id desc LIMIT #{range},5;
+		SELECT c.*, u.email as email 
+		FROM comment c 
+		LEFT OUTER JOIN user u ON c.insId = u.id 
+		WHERE productId = #{productId} AND parentId = 0 AND delId is null 
+		ORDER BY id DESC 
+		LIMIT #{page}, 5
 	</select>
 	
 	<select id="productUserCommentListCount" resultType="com.example.shop.model.Comment">
-		SELECT c.*,u.email FROM comment c LEFT OUTER JOIN user u ON c.insId=u.id WHERE productId=#{productId} and parentId=0 and delId is null ORDER BY id desc
+		SELECT c.*, u.email as email 
+		FROM comment c 
+		LEFT OUTER JOIN user u ON c.insId = u.id 
+		WHERE productId = #{productId} AND parentId = 0 AND delId is null 
+		ORDER BY id DESC
 	</select>
+	
 	
 	<select id="productAdminReplyList" resultType="com.example.shop.model.Comment">
 		SELECT c.*,u.email FROM comment c JOIN user u ON c.insId=u.id WHERE c.parentId=#{commentId} and delId is null;
 	</select>
+	
+	
+	
 	
 </mapper>

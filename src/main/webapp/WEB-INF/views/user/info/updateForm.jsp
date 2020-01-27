@@ -164,10 +164,10 @@
 							success : function(data) {
 								if (data === "ok") {
 									alert("회원탈퇴가 완료되었습니다.");
-									location.href("http://localhost:8080/");
+									location.href="/logout";
 								} else {
 									alert("회원탈퇴가 실패되었습니다.");
-									location.href("http://localhost:8080/");
+									location.href="/logout";
 								}
 							}
 						});
@@ -192,7 +192,6 @@
 				alert("주소를 빠짐없이 기입하셔야 합니다.");
 				return false;
 			} else {
-				alert($("#userAddress1").val() + " " + $("#userAddress2").val());
 				return true;
 			}
 		}

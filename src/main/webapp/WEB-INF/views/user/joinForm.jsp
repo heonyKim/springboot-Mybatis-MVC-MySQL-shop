@@ -76,7 +76,7 @@
 							</a>
 						<input type="text" name="email" id="your-email" class="input-text"
 							placeholder="이메일 입력" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}"
-							oninvalid="this.setCustomValidity('올바른 이메일 형식(id@address)으로 입력해주세요.')">
+							oninvalid="this.setCustomValidity('올바른 이메일 형식(id@address)으로 입력해주세요.')" oninput = "setCustomValidity ('')">
 
 					</div>
 					<div class="form-row">

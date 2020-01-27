@@ -141,14 +141,22 @@ function orderCartList(){
 			$.each(data, function(index, item){
 				$.each(item, function(index, jsonData){
 					cartListHtml += `<tr>`;
-					cartListHtml += `	<td style="vertical-align: middle;">`;
-					cartListHtml += `		<img src="` + jsonData.filePath + `" width="80px"/>`;
-					cartListHtml += `		<span style="font-size: 1.25em; font-weight: 500;">` + jsonData.productNm + `</span>`;
+					cartListHtml += `	<td style="vertical-align: middle; padding-left: 0px;">`;
+					cartListHtml += `		<table>`;
+					cartListHtml += `			<tr style="border-top: 2px solid white;">`;
+					cartListHtml += `				<td style="width:20%; padding-left:0;">`;
+					cartListHtml += `					<img src="` + jsonData.filePath + `" width="80px"/>`;
+					cartListHtml += `				</td>`;
+					cartListHtml += `				<td style="width:auto; padding-left:0;">`;
+					cartListHtml += `					<span style="font-size: 10.5pt; font-weight: 500;">` + jsonData.productNm + `</span>`;
+					cartListHtml += `				</td>`;
+					cartListHtml += `			</tr>`;
+					cartListHtml += `		</table>`;
 					cartListHtml += `		<input type="hidden" value="` + jsonData.productId + `" />`;
 					cartListHtml += `	</td>`;
-					cartListHtml += `	<td style="vertical-align: middle;"><h5>` + number_format(jsonData.price) + `원</h5></td>`;
+					cartListHtml += `	<td style="vertical-align: middle; padding-left:0; padding-right:0;"><h6>` + number_format(jsonData.price) + `원</h6></td>`;
 					cartListHtml += `	<td style="vertical-align: middle;"><h5>` + jsonData.cnt + `</h5></td>`;
-					cartListHtml += `	<td style="vertical-align: middle;"><h5>` + number_format(jsonData.price * jsonData.cnt) + `원</h5></td>`;
+					cartListHtml += `	<td style="vertical-align: middle; padding-left:0; padding-right:0;"><h5>` + number_format(jsonData.price * jsonData.cnt) + `원</h5></td>`;
 					cartListHtml += `</tr>`;
 					
 					sum += jsonData.price * jsonData.cnt;
@@ -261,15 +269,16 @@ function applyCoupon(){
 
 function insertOrder(){
 	var orderNo = getOrderNo();
-	var listCnt = document.getElementsByTagName("td").length;
+	var listCnt = document.getElementsByTagName("table")[0].childNodes[3].childNodes.length;
 	var sum = 0;
 	
 	var result = "";
 	
-	for(i=0; i<(listCnt-1)/4; i++){
-		var productId = document.getElementsByTagName("td")[(4*i)].childNodes[5].value;
-		var price = document.getElementsByTagName("td")[(4*i)+1].childNodes[0].innerText.replace(",", "").replace("원", "");
-		var cnt = document.getElementsByTagName("td")[(4*i)+2].childNodes[0].innerText;
+	for(i=0; i<(listCnt-1); i++){
+		console.log(document.getElementsByTagName("table")[0].childNodes[3].childNodes[i]);
+		var productId = document.getElementsByTagName("table")[0].childNodes[3].childNodes[i].childNodes[1].childNodes[3].value;
+		var price = document.getElementsByTagName("table")[0].childNodes[3].childNodes[i].childNodes[3].innerText.replace(",", "").replace("원", "");
+		var cnt = document.getElementsByTagName("table")[0].childNodes[3].childNodes[i].childNodes[5].innerText;
 		var discountAmt = $("#discount").val();
 		
 		if(discountAmt.substr(-1) == "%"){
@@ -322,7 +331,7 @@ function insertOrder(){
 		var paymentCd = $("#rdCash").is(":checked")? "01" : $("#rdCard").is(":checked")? "02" : "00";
 		
 		if(paymentCd == "02"){
-			imp(orderNo, sum, $("#recipient").val());
+			var str = imp(orderNo, sum, $("#recipient").val());
 		} else {
 			updatePayment(orderNo, paymentCd);
 			location.href = "/order/result/" + orderNo;
@@ -417,12 +426,12 @@ function orderResult(orderNo){
 				$.each(item, function(index, jsonData){
 					orderListHtml += `<tr>`;
 					orderListHtml += `	<td style="vertical-align: middle;">`;
-					orderListHtml += `		<table><tr><td><img src="` + jsonData.filePath + `" width="80px"/></td>`;
-					orderListHtml += `		<td><span style="font-size: 10.5pt; font-weight: 500;"><a href="/product/` + jsonData.productId + `" style="color: black; text-decoration: none;">` + jsonData.productNm + `</a></span></td></tr></table>`;
+					orderListHtml += `		<table><tr style="border-top: 2px solid white;"><td style="width:20%;padding-left:0;"><img src="` + jsonData.filePath + `" width="80px"/></td>`;
+					orderListHtml += `		<td style="width:auto;padding-left:0;"><span style="font-size: 10.5pt; font-weight: 500;"><a href="/product/` + jsonData.productId + `" style="color: black; text-decoration: none;">` + jsonData.productNm + `</a></span></td></tr></table>`;
 					orderListHtml += `		<input type="hidden" value="` + jsonData.productId + `" />`;
 					orderListHtml += `	</td>`;
 					orderListHtml += `	<td style="vertical-align: middle;"><h5>` + jsonData.cnt + `</h5></td>`;
-					orderListHtml += `	<td style="vertical-align: middle;"><h5>` + number_format(jsonData.amount) + `원</h5></td>`;
+					orderListHtml += `	<td style="vertical-align: middle; padding-left: 0;padding-right: 0;"><h6>` + number_format(jsonData.amount) + `원</h6></td>`;
 					orderListHtml += `</tr>`;
 					
 					$("#recipient").html(jsonData.recipient);

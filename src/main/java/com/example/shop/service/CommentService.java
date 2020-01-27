@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.shop.model.Comment;
 import com.example.shop.repository.CommentRepository;
+import com.example.shop.utils.Util;
 
 @Service
 public class CommentService {
@@ -15,11 +16,11 @@ public class CommentService {
 	@Autowired
 	private CommentRepository commentRep;
 	
-	
 	public String commentWrite(Comment comment) {
 		String resultStr = "";
 		
 		try {
+			comment.setContent(Util.replaceTag(comment.getContent()));
 			int result = commentRep.commentWrite(comment);
 			
 			if(result > 0) {
@@ -54,18 +55,19 @@ public class CommentService {
 		return resultStr;
 	}
 	
-
-	public int productUserCommentListCount(int productId) {
-		List<Comment> comments = commentRep.productUserCommentListCount(productId);
-		int pageMax = (int) Math.ceil(comments.size()/5.0);
-		return pageMax;
+	public List<Comment> productCommentList(int productId,int page) {
+		List<Comment> productCommentList = commentRep.productUserCommentList(productId,page);
+		return productCommentList;
 	}
 	
+	public int productCommentListCount(int productId) {
+		List<Comment> productCommentListCount = commentRep.productUserCommentListCount(productId);
+		return productCommentListCount.size();
+	}
 	
-	public List<Comment> productCommentList(int productId,int page) {
-		int range = (page-1)*5;
-		List<Comment> productCommentList = commentRep.productUserCommentList(productId,range);
-		return productCommentList;
+	public List<Comment> productRatingMean (int productId) {
+		List<Comment> productCommentListCount = commentRep.productUserCommentListCount(productId);
+		return productCommentListCount;
 	}
 	
 	public List<Comment> productReplyList(@RequestParam("commentId") int commentId) {

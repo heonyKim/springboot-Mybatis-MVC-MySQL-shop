@@ -4,9 +4,9 @@
 
 	<!-- ADMIN -->
 	<select id="findAll" resultType="com.example.shop.model.Board">
-		SELECT @ROWNUM := @ROWNUM + 1 as 'rowNum', b.*, u.email
+		SELECT @ROWNUM := @ROWNUM + 1 as 'rowNum', b.*, ifnull(u.email, '탈퇴한 유저') as email
 		from board b
-		INNER JOIN user u ON b.insId = u.id
+		LEFT OUTER JOIN user u ON b.insId = u.id
 		WHERE b.delDt is null AND b.categoryCd = #{categoryCd} AND (@ROWNUM:=0)=0
 		ORDER BY rowNum desc;
 	</select>
@@ -16,9 +16,9 @@
 	</insert>
 	
 	<select id="findById" resultType="com.example.shop.model.Board">
-		SELECT b.*, u.email
+		SELECT b.*, ifnull(u.email, '탈퇴한 유저') as email
 		FROM board b
-		INNER JOIN user u ON b.insId = u.id
+		LEFT OUTER JOIN user u ON b.insId = u.id
 		WHERE b.id=#{id}
 	</select>
 	
@@ -32,9 +32,9 @@
 
   	<!-- USER -->
 	<select id="findAlluser" resultType="com.example.shop.model.Board">
-		SELECT @ROWNUM := @ROWNUM + 1 as 'rowNum', b.id, b.title, u.email, b.insDt, c.codeNm as 'categoryNm'
+		SELECT @ROWNUM := @ROWNUM + 1 as 'rowNum', b.id, b.title, ifnull(u.email, '탈퇴한 유저') as email, b.insDt, c.codeNm as 'categoryNm'
 		FROM board b
-		INNER JOIN user u ON b.insId = u.id
+		LEFT OUTER JOIN user u ON b.insId = u.id
 		INNER JOIN code c ON b.categoryCd = c.code AND c.codeGbn = 'BOARD'
 		WHERE b.delid is null AND b.delDt is null AND b.categoryCd=#{categoryCd} AND (@ROWNUM:=0)=0
 		ORDER BY rowNum DESC

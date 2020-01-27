@@ -66,7 +66,7 @@
 
 									<div class="card-body">
 										<h4 class="card-title">
-											<a href="/product/${best.id}" style="text-decoration: none;">${best.productNm}</a>
+											<a href="/product/${best.id}" style="text-decoration: none;font-size: 1.0rem;font-weight:600;">${best.productNm}</a>
 										</h4>
 										<span style="color: #777777; text-decoration: line-through;">
 											<fmt:formatNumber value="${best.price}" type="number"></fmt:formatNumber>원
@@ -107,7 +107,7 @@
 
 									<div class="card-body">
 										<h4 class="card-title">
-											<a href="/product/${best.id}" style="text-decoration: none;">${best.productNm}</a>
+											<a href="/product/${best.id}" style="text-decoration: none; font-size: 1.0rem;font-weight:600;">${best.productNm}</a>
 										</h4>
 										<h5>
 											<fmt:formatNumber value="${best.price}" pattern="#,###"></fmt:formatNumber>원
@@ -157,7 +157,7 @@
 									<div class="card-body">
 										<h4 class="card-title">
 											<a href="/product/${listAll.id}"
-												style="text-decoration: none;">${listAll.productNm}</a>
+												style="text-decoration: none;font-size: 1.0rem;font-weight:600;">${listAll.productNm}</a>
 										</h4>
 										<span style="color: #777777; text-decoration: line-through;"><fmt:formatNumber
 												value="${listAll.price}" type="number"></fmt:formatNumber>원</span>
@@ -199,7 +199,7 @@
 									</div>
 									<div class="card-body">
 										<h4 class="card-title">
-											<a href="/product/${listAll.id}">${listAll.productNm}</a>
+											<a href="/product/${listAll.id}" style="font-size: 1.0rem;font-weight:600;">${listAll.productNm}</a>
 										</h4>
 										<h5>
 											<fmt:formatNumber value="${listAll.price}" type="number"></fmt:formatNumber>원

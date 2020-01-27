@@ -32,8 +32,8 @@
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 		<div class="container">
-			<a class="navbar-brand logo-font" href="/" id="brand">
-				TEST PAGE
+			<a class="navbar-brand logo-font" href="/" id="brand" style="padding:0;">
+				<img src="/logo.png">
 			</a>
 			<!-- links toggle -->
 			<button class="navbar-toggler order-first" type="button" data-toggle="collapse" data-target="#links"

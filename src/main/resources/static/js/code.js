@@ -81,7 +81,7 @@ function codeList(){
 
 function codeInsert(){
 	var codeGbnChk = /^[A-Z]$/;
-	if(!codeGbnChk.test($("#codeGbn").val())){
+	if(codeGbnChk.test($("#codeGbn").val())){
 		alert("코드구분은 대문자만 입력가능합니다. ex)BOARD, CATEGORY, ..");
 		return false;
 	} else if(!($("#code").val().length == 2)){

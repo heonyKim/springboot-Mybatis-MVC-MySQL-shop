@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/include/nav.jsp"%>
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet">
 <section class="confirmation_part section_padding">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-12 col-sm-12">
 				<h3 class="mb-4">주문 정보 <span style="font-size:1rem;">(주문번호 : ${orderNo})</span></h3>
-				<table class="table">
+				<table class="table" style="width:100%;">
 					<thead>
 						<tr>
-							<th>상품</th>
-							<th>수량</th>
-							<th>금액</th>
+							<th style="width:60%;">상품</th>
+							<th style="width:auto; padding-left: 0;padding-right: 0;">수량</th>
+							<th style="width:20%;">금액</th>
 						</tr>
 					</thead>
 					<tbody id="orderList">
@@ -30,7 +30,7 @@
 					할인 금액 : <span id="discountAmt"></span>원
 				</div>
 				<div class="col-md-12 form-group">
-					결제 금액 : <span id="resultAmt"></span>원
+					결제 금액 : <b><span id="resultAmt"></span>원</b>
 				</div>
 			</div>
 			<div class="col-lg-6 mb-4">

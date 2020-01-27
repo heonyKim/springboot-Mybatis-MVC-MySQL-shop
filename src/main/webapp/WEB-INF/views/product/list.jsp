@@ -25,7 +25,7 @@
 									<div class="thumbnail-wrapper">
 										<div class="thumbnail">
 											<div class="thumbnail-centered">
-												<a href="/product/${list.id}">
+												<a href="/product/${list.id}" style="font-size: 1.0rem;font-weight:600;">
 													<img class="thumbnail-img" src="${list.filePath}" alt="">
 												</a>
 											</div>
