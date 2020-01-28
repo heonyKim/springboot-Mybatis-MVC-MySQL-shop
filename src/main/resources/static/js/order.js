@@ -234,7 +234,6 @@ function applyCoupon(){
 				
 				var discountAmt = 0;
 				var resultAmt = 0;
-				
 				if(data.data.substr(-1) == "%"){
 					discountAmt = Math.round(totalAmt * (discount/100));
 				} else {
@@ -280,15 +279,12 @@ function insertOrder(){
 		var price = document.getElementsByTagName("table")[0].childNodes[3].childNodes[i].childNodes[3].innerText.replace(",", "").replace("원", "");
 		var cnt = document.getElementsByTagName("table")[0].childNodes[3].childNodes[i].childNodes[5].innerText;
 		var discountAmt = $("#discount").val();
-		
 		if(discountAmt.substr(-1) == "%"){
 			discountAmt = Math.round(price * cnt * (discountAmt.substring(0, discountAmt.length-1)/100));
 		} else {
-			discountAmt = discountAmt.substring(0, discountAmt.length-1) / ((listCnt-1)/4);
+			discountAmt = discountAmt.substring(0, discountAmt.length-1) / ((listCnt-1));
 		}
-		
 		sum += (price * cnt) - discountAmt;
-		
 		$.ajax({
 			async: false, 
 			url: "/order/insert",
